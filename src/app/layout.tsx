@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { MusicPlayer } from "@/components/music-player";
-import { Navbar } from "@/components/navbar";
+import { ConnectSection } from "@/components/connect-section";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,7 +38,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans">
         {children}
         <MusicPlayer />
-        <Navbar />
+        <ConnectSection />
       </body>
     </html>
   );

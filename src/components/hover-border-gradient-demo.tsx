@@ -11,7 +11,7 @@ export default function HoverBorderGradientDemo() {
         className="bg-black text-white flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold"
       >
         <AceternityLogo />
-        <span>Aceternity UI</span>
+        <span>open to work</span>
       </HoverBorderGradient>
     </div>
   );

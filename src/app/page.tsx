@@ -11,28 +11,6 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-black w-full overflow-hidden selection:bg-white selection:text-black font-sans relative">
 
-      {/* Top Left: Location Block
-          <div className="absolute top-6 left-6 md:top-10 md:left-10 z-30 flex flex-col items-center space-y-1 group transition-opacity hover:opacity-80 translate-y-1 md:translate-y-0 max-w-[70px] md:max-w-none">
-            <div className="flex h-6 w-6 md:h-9 md:w-9 items-center justify-center rounded-full border border-white/5 bg-white/5 text-green-500 shadow-lg backdrop-blur-sm">
-              <MapPin className="h-3 w-3 md:h-4.5 md:w-4.5" />
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <span className="text-[7px] md:text-[10px] font-bold uppercase tracking-tight text-neutral-500">Based On</span>
-              <span className="text-[10px] md:text-sm font-bold tracking-tighter text-white uppercase leading-none">Odisha</span>
-            </div>
-          </div>
-
-          {/* Top Right: Role Block *
-          <div className="absolute top-6 right-6 md:top-10 md:right-10 z-30 flex flex-col items-center space-y-1 group transition-opacity hover:opacity-80 text-center translate-y-1 md:translate-y-0 max-w-[70px] md:max-w-none">
-            <div className="flex h-6 w-6 md:h-9 md:w-9 items-center justify-center rounded-full border border-white/5 bg-white/5 text-blue-500 shadow-lg backdrop-blur-sm">
-              <Layers className="h-3 w-3 md:h-4.5 md:w-4.5" />
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <span className="text-[10px] md:text-sm font-bold tracking-tighter text-white uppercase leading-none">Fullstack</span>
-              <span className="text-[8px] md:text-xs font-bold uppercase tracking-tight text-neutral-500 leading-none">ML Engineer</span>
-            </div>
-          </div> */}
-
       <div className="relative z-20 flex h-screen w-full flex-col items-center justify-center px-6 text-center space-y-16 md:space-y-24">
 
         {/* Top Badge (Say Hi) */}
@@ -45,7 +23,7 @@ export default function Home() {
           <HoverBorderGradient
             containerClassName="rounded-full"
             as="button"
-            className="bg-black text-[10px] md:text-xs font-semibold text-white px-3 py-1.5 flex items-center space-x-2"
+            className="bg-black text-[10px] md:text-xs font-semibold text-white px-5 py-2 flex items-center space-x-2"
           >
             <span>Open to work</span>
 
