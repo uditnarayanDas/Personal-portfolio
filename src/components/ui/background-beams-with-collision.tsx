@@ -70,7 +70,7 @@ export const BackgroundBeamsWithCollision = ({
     <div
       ref={parentRef}
       className={cn(
-        "h-96 md:h-[40rem] bg-gradient-to-b from-black to-black dark:from-neutral-950 dark:to-neutral-800 relative flex items-center w-full justify-center overflow-hidden",
+        "h-96 md:h-[40rem] bg-gradient-to-b from-black to-black relative flex items-center w-full justify-center overflow-hidden",
         // h-screen if you want bigger
         className
       )}
@@ -234,6 +234,7 @@ const Explosion = ({ ...props }: React.HTMLProps<HTMLDivElement>) => {
   }[]>([]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSpans(
       Array.from({ length: 20 }, (_, index) => ({
         id: index,

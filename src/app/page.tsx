@@ -1,41 +1,90 @@
+"use client";
+
 import React from "react";
-import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
+import { motion } from "motion/react";
+import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
+import { ShootingStars } from "@/components/ui/shooting-stars";
+import { StarsBackground } from "@/components/ui/stars-background";
+import { MapPin, Layers } from "lucide-react";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-black w-full overflow-hidden">
-      <BackgroundBeamsWithCollision className="min-h-screen">
-        <div className="z-20 flex flex-col items-center justify-center space-y-6 text-center px-4 relative">
-          
-          {/* Subtle badge/tag */}
-          <div className="bg-white/10 dark:bg-black/20 border border-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-sm font-medium text-white/80 uppercase tracking-widest shadow-xl transition-all hover:bg-white/15">
-            Welcome to my Portfolio
+    <main className="min-h-screen bg-black w-full overflow-hidden selection:bg-white selection:text-black font-sans relative">
+
+      {/* Top Left: Location Block
+          <div className="absolute top-6 left-6 md:top-10 md:left-10 z-30 flex flex-col items-center space-y-1 group transition-opacity hover:opacity-80 translate-y-1 md:translate-y-0 max-w-[70px] md:max-w-none">
+            <div className="flex h-6 w-6 md:h-9 md:w-9 items-center justify-center rounded-full border border-white/5 bg-white/5 text-green-500 shadow-lg backdrop-blur-sm">
+              <MapPin className="h-3 w-3 md:h-4.5 md:w-4.5" />
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <span className="text-[7px] md:text-[10px] font-bold uppercase tracking-tight text-neutral-500">Based On</span>
+              <span className="text-[10px] md:text-sm font-bold tracking-tighter text-white uppercase leading-none">Odisha</span>
+            </div>
           </div>
 
-          {/* Main Hero Header */}
-          <h1 className="text-4xl md:text-6xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-neutral-200 to-neutral-500 tracking-tighter mix-blend-difference pb-2">
-            Creative <br /> Developer
-          </h1>
-          
-          {/* Subheader */}
-          <p className="mt-4 text-neutral-300 max-w-lg mx-auto text-lg md:text-xl font-light tracking-wide [text-shadow:0_4px_8px_rgba(0,0,0,0.5)]">
-            Crafting premium, high-performance web applications with stunning visual experiences.
-          </p>
+          {/* Top Right: Role Block *
+          <div className="absolute top-6 right-6 md:top-10 md:right-10 z-30 flex flex-col items-center space-y-1 group transition-opacity hover:opacity-80 text-center translate-y-1 md:translate-y-0 max-w-[70px] md:max-w-none">
+            <div className="flex h-6 w-6 md:h-9 md:w-9 items-center justify-center rounded-full border border-white/5 bg-white/5 text-blue-500 shadow-lg backdrop-blur-sm">
+              <Layers className="h-3 w-3 md:h-4.5 md:w-4.5" />
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <span className="text-[10px] md:text-sm font-bold tracking-tighter text-white uppercase leading-none">Fullstack</span>
+              <span className="text-[8px] md:text-xs font-bold uppercase tracking-tight text-neutral-500 leading-none">ML Engineer</span>
+            </div>
+          </div> */}
 
-          {/* Call to Action Button */}
-          <div className="mt-10 relative group cursor-pointer inline-block">
-            <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-full blur opacity-40 group-hover:opacity-100 transition duration-500 group-hover:duration-200"></div>
-            <button className="relative px-8 py-4 bg-black text-white rounded-full font-semibold border border-white/10 hover:border-white/30 transition-all text-lg shadow-2xl overflow-hidden flex items-center gap-2">
-              <span>View Projects</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right group-hover:translate-x-1 transition-transform">
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-          
+      <div className="relative z-20 flex h-screen w-full flex-col items-center justify-center px-6 text-center space-y-16 md:space-y-24">
+
+        {/* Top Badge (Say Hi) */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="mb-4"
+        >
+          <HoverBorderGradient
+            containerClassName="rounded-full"
+            as="button"
+            className="bg-black text-[10px] md:text-xs font-semibold text-white px-3 py-1.5 flex items-center space-x-2"
+          >
+            <span>Open to work</span>
+
+
+          </HoverBorderGradient>
+        </motion.div>
+
+        {/* Signature Name & Tagline Block */}
+        <div className="flex flex-col items-center space-y-6 md:space-y-10">
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="text-[22vw] font-black leading-[0.8] tracking-[-0.05em] text-white md:text-[14vw]"
+          >
+            UDIT
+          </motion.h1>
+
+          {/* Dual-Part Tagline */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.6 }}
+            className="flex flex-col items-center space-y-1.5 pt-6 md:pt-8"
+          >
+            <p className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.6em] text-neutral-500 pb-1">
+              I create digital experiences that
+            </p>
+            <h2 className="font-serif text-2xl italic text-white md:text-4xl lg:text-5xl tracking-tight">
+              make a meaningful difference.
+            </h2>
+          </motion.div>
         </div>
-      </BackgroundBeamsWithCollision>
+
+      </div>
+
+      {/* Starry Background Components */}
+      <ShootingStars />
+      <StarsBackground />
     </main>
   );
 }
