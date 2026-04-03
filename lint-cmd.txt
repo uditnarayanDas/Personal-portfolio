@@ -1,0 +1,43 @@
+
+C:\Users\dasud\Desktop\portfolio\src\components\ui\background-beams-with-collision.tsx
+  117:51  warning  'ref' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+  161:6   warning  React Hook useEffect has a missing dependency: 'parentRef'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      react-hooks/exhaustive-deps
+  231:28  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\dasud\Desktop\portfolio\src\components\ui\background-beams-with-collision.tsx:231:28
+  229 |     initialX: 0,
+  230 |     initialY: 0,
+> 231 |     directionX: Math.floor(Math.random() * 80 - 40),
+      |                            ^^^^^^^^^^^^^ Cannot call impure function
+  232 |     directionY: Math.floor(Math.random() * -50 - 10),
+  233 |   }));
+  234 |                                                                                                  react-hooks/purity
+  232:28  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\dasud\Desktop\portfolio\src\components\ui\background-beams-with-collision.tsx:232:28
+  230 |     initialY: 0,
+  231 |     directionX: Math.floor(Math.random() * 80 - 40),
+> 232 |     directionY: Math.floor(Math.random() * -50 - 10),
+      |                            ^^^^^^^^^^^^^ Cannot call impure function
+  233 |   }));
+  234 |
+  235 |   return (                                                                                                        react-hooks/purity
+  253:35  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\dasud\Desktop\portfolio\src\components\ui\background-beams-with-collision.tsx:253:35
+  251 |             opacity: 0,
+  252 |           }}
+> 253 |           transition={{ duration: Math.random() * 1.5 + 0.5, ease: "easeOut" }}
+      |                                   ^^^^^^^^^^^^^ Cannot call impure function
+  254 |           className="absolute h-1 w-1 rounded-full bg-gradient-to-b from-indigo-500 to-purple-500"
+  255 |         />
+  256 |       ))}  react-hooks/purity
+
+✖ 5 problems (3 errors, 2 warnings)
+
