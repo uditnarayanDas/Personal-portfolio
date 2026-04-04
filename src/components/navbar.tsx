@@ -7,6 +7,7 @@ import {
   Search, 
   ChevronDown, 
   Menu, 
+  X,
   FlaskConical, 
   Link as LinkIcon, 
   Monitor, 
@@ -18,14 +19,25 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.body.style.overflow = "unset";
+    };
+  }, [isMobileMenuOpen]);
 
   const navLinks = [
     { name: "Home", href: "/", active: true },
@@ -48,8 +60,8 @@ export function Navbar() {
       >
         <div className="flex items-center gap-1 sm:gap-2 px-3 py-1.5 bg-[#121212]/80 backdrop-blur-xl border border-white/10 shadow-2xl rounded-full font-sans">
           
-          {/* Navigation Links (Desktop) */}
-          <div className="hidden md:flex items-center gap-1">
+          {/* Navigation Links (Desktop - now at lg breakpoint for tablet space) */}
+          <div className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -81,7 +93,7 @@ export function Navbar() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[480px] p-4 bg-[#121212]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-[24px] z-50 pointer-events-auto overflow-hidden"
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[480px] p-4 bg-[#121212]/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-[24px] z-50 pointer-events-auto overflow-hidden text-left"
                   >
                     <div className="grid grid-cols-5 gap-4">
                       {/* Left: Labs Card */}
@@ -98,7 +110,7 @@ export function Navbar() {
                       </div>
 
                       {/* Right: Items List */}
-                      <div className="col-span-3 flex flex-col gap-1">
+                      <div className="col-span-3 flex flex-col gap-1 text-left">
                         <DropdownItem 
                           icon={<LinkIcon className="w-4 h-4" />} 
                           title="Links" 
@@ -125,20 +137,32 @@ export function Navbar() {
             </div>
           </div>
 
-          <div className="hidden md:block w-[1px] h-6 bg-white/10" />
+          <div className="hidden lg:block w-[1px] h-6 bg-white/10" />
 
           {/* Action Buttons */}
           <div className="flex items-center gap-2">
-            {/* Mobile Menu Button */}
-            <button className="flex md:hidden items-center justify-center p-2 rounded-full text-neutral-300 hover:bg-neutral-800 hover:text-white transition-colors duration-300">
-              <Menu className="w-4 h-4" />
+            {/* Mobile Menu Toggle */}
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="flex lg:hidden items-center justify-center p-2 rounded-full text-neutral-300 hover:bg-neutral-800 hover:text-white transition-colors duration-300"
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={isMobileMenuOpen ? "close" : "menu"}
+                  initial={{ opacity: 0, rotate: -90 }}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0, rotate: 90 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+                </motion.div>
+              </AnimatePresence>
             </button>
 
-            {/* Desktop Search Button removed from here */}
-
+            {/* Book a Call hidden on tablet where it squishes */}
             <Link
               href="#book"
-              className="relative overflow-hidden flex items-center justify-center px-5 py-1.5 rounded-full font-medium text-sm text-white bg-gradient-to-b from-white/10 to-transparent border border-white/10 hover:from-white/20 hover:border-white/20 transition-all duration-300 shadow-[inset_0_1px_rgba(255,255,255,0.2)]"
+              className="hidden lg:flex relative overflow-hidden items-center justify-center px-5 py-1.5 rounded-full font-medium text-sm text-white bg-gradient-to-b from-white/10 to-transparent border border-white/10 hover:from-white/20 hover:border-white/20 transition-all duration-300 shadow-[inset_0_1px_rgba(255,255,255,0.2)]"
             >
               Book a Call
             </Link>
@@ -157,18 +181,71 @@ export function Navbar() {
       >
         <Search className="w-4 h-4 group-hover:scale-110 transition-transform" />
       </motion.button>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-[45] bg-[#0B0B0B]/95 backdrop-blur-3xl pt-28 px-6 pb-10 flex flex-col justify-between lg:hidden overflow-y-auto"
+          >
+            <div className="flex flex-col space-y-6">
+              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-600 mb-2">Navigation</p>
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-4xl font-bold text-white hover:text-neutral-400 transition-colors"
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <div className="pt-8 flex flex-col space-y-4">
+                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-600 mb-2">Discovery</p>
+                <Link href="#labs" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-neutral-300 flex items-center gap-3">
+                  <FlaskConical className="w-5 h-5 text-neutral-500" /> Labs
+                </Link>
+                <Link href="#links" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-neutral-300 flex items-center gap-3">
+                  <LinkIcon className="w-5 h-5 text-neutral-500" /> Links
+                </Link>
+                <Link href="#uses" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-neutral-300 flex items-center gap-3">
+                  <Monitor className="w-5 h-5 text-neutral-500" /> Uses
+                </Link>
+                <Link href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="text-xl text-neutral-300 flex items-center gap-3">
+                  <BookOpen className="w-5 h-5 text-neutral-500" /> Guestbook
+                </Link>
+              </div>
+            </div>
+
+            <div className="flex flex-col space-y-4 mt-12 pb-6">
+               <Link
+                href="#book"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center py-4 rounded-2xl font-bold text-lg text-black bg-white hover:bg-neutral-200 transition-all shadow-xl"
+              >
+                Book a Call
+              </Link>
+              <p className="text-center text-xs text-neutral-600">Available for projects 2024</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
 
 function DropdownItem({ icon, title, subtitle, href }: { icon: React.ReactNode, title: string, subtitle: string, href: string }) {
   return (
-    <Link href={href} className="group flex items-center gap-3 p-2 rounded-[12px] hover:bg-white/5 transition-all duration-200">
-      <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-neutral-800/50 border border-white/5 text-neutral-400 group-hover:text-white group-hover:border-white/10 transition-colors">
+    <Link href={href} className="group flex items-center gap-3 p-2 rounded-[12px] hover:bg-white/5 transition-all duration-200 w-full">
+      <div className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-neutral-800/50 border border-white/5 text-neutral-400 group-hover:text-white group-hover:border-white/10 transition-colors">
         {icon}
       </div>
-      <div className="flex flex-col gap-0">
-        <span className="text-[14px] text-white font-medium">{title}</span>
+      <div className="flex flex-col gap-0 text-left overflow-hidden">
+        <span className="text-[14px] text-white font-medium truncate">{title}</span>
         <span className="text-[11px] text-neutral-500 group-hover:text-neutral-400 transition-colors truncate">
           {subtitle}
         </span>
