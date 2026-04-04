@@ -38,7 +38,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col font-sans">
         <Navbar />
-        {children}
+        <div id="app-content" className="flex-1 flex flex-col">
+          {children}
+        </div>
         <MusicPlayer />
         <ConnectSection />
       </body>

@@ -14,7 +14,7 @@ export function ConnectSection() {
   };
 
   return (
-    <div className="fixed bottom-28 md:bottom-16 left-1/2 -translate-x-1/2 z-40 flex flex-col md:flex-row items-center gap-4 md:gap-10">
+    <div id="connect-section" className="fixed bottom-28 md:bottom-16 left-1/2 -translate-x-1/2 z-40 flex flex-col md:flex-row items-center gap-4 md:gap-10">
       {/* Let's Connect Button */}
       <motion.button
         whileHover={{ scale: 1.05 }}

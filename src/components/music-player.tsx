@@ -18,7 +18,7 @@ export function MusicPlayer() {
   };
 
   return (
-    <div className="fixed bottom-6 left-6 z-50 flex items-center justify-center">
+    <div id="music-player" className="fixed bottom-6 left-6 z-50 flex items-center justify-center">
       <audio ref={audioRef} src="/song.mp3" loop />
 
       {/* Main Container - The large warm orange background */}
