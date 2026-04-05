@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { MusicPlayer } from "@/components/music-player";
-import { ConnectSection } from "@/components/connect-section";
+
 import { Navbar } from "@/components/navbar";
 
 const geistSans = Geist({
@@ -42,7 +42,7 @@ export default function RootLayout({
           {children}
         </div>
         <MusicPlayer />
-        <ConnectSection />
+
       </body>
     </html>
   );

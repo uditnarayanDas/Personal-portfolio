@@ -121,9 +121,11 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans scroll-smooth;
   }
@@ -160,6 +162,7 @@
     position: relative;
     background-color: transparent;
   }
+
   .noise-bg::before {
     content: "";
     position: absolute;
@@ -169,13 +172,23 @@
     pointer-events: none;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
+
   .inner-glow {
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
   }
 }
 
 .command-menu-open {
-  #navbar, 
+  overflow: hidden !important;
+}
+
+.command-menu-open body {
+  overflow: hidden !important;
+}
+
+.command-menu-open {
+
+  #navbar,
   #music-player,
   #app-content,
   #connect-section,
@@ -185,10 +198,65 @@
   }
 }
 
-#navbar, 
+#navbar,
 #music-player,
 #app-content,
 #connect-section,
 .floating-search-btn {
   transition: filter 0.5s cubic-bezier(0.16, 1, 0.3, 1), brightness 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── Bento Grid Cards ─── */
+.bento-card {
+  /* Rich charcoal glass base for better blur catch */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  background-color: rgba(10, 10, 10, 0.75); 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(24px); /* Match navbar for consistency */
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.1),
+    0 10px 40px -10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, border-color 0.4s ease, background-color 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.bento-card:hover {
+  background-color: rgba(15, 15, 15, 0.85); /* Subtle shift, no "whole card glow" */
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Cursor-tracking glow */
+.bento-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(255, 255, 255, 0.06),
+      transparent 60%);
+  transition: opacity 0.4s ease;
+}
+
+.bento-card:hover::after {
+  opacity: 1;
+}
+
+/* Hide scrollbar for service cards */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }

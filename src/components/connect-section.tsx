@@ -14,7 +14,13 @@ export function ConnectSection() {
   };
 
   return (
-    <div id="connect-section" className="fixed bottom-28 md:bottom-16 left-1/2 -translate-x-1/2 z-40 flex flex-col md:flex-row items-center gap-4 md:gap-10">
+    <motion.div
+      id="connect-section"
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.8 }}
+      className="flex flex-col md:flex-row items-center gap-4 md:gap-10"
+    >
       {/* Let's Connect Button */}
       <motion.button
         whileHover={{ scale: 1.05 }}
@@ -39,6 +45,6 @@ export function ConnectSection() {
           {email}
         </span>
       </div>
-    </div>
+    </motion.div>
   );
 }
