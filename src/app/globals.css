@@ -228,8 +228,7 @@
 }
 
 .bento-card:hover {
-  background-color: rgba(15, 15, 15, 0.85); /* Subtle shift, no "whole card glow" */
-  border-color: rgba(255, 255, 255, 0.15);
+  /* Removed whole card glow/bg shift */
 }
 
 /* Cursor-tracking glow */
@@ -241,7 +240,7 @@
   opacity: 0;
   pointer-events: none;
   z-index: 1;
-  background: radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+  background: radial-gradient(250px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
       rgba(255, 255, 255, 0.06),
       transparent 60%);
   transition: opacity 0.4s ease;

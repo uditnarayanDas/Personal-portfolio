@@ -20,6 +20,12 @@ import {
   Sparkles,
   ShieldCheck,
 } from "lucide-react";
+import {
+  TextRevealCard,
+  TextRevealCardDescription,
+  TextRevealCardTitle,
+} from "@/components/ui/text-reveal-card";
+import { FlipWords } from "@/components/ui/flip-words";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -93,7 +99,7 @@ function CobeGlobe() {
 
   return (
     <div
-      className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[12%] w-[320px] h-[320px] md:w-[360px] md:h-[360px]"
+      className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[22%] md:translate-y-[25%] w-[330px] h-[330px] md:w-[380px] md:h-[380px]"
       style={{
         WebkitMaskImage: fadeMask,
         maskImage: fadeMask,
@@ -138,36 +144,6 @@ function CobeGlobe() {
   );
 }
 
-/* ═══════════════════════ Overlapping Circles (Partnership) ═══════════════════════ */
-function OverlappingCircles() {
-  const circleClasses = "rounded-full border border-white/[0.08] flex items-center justify-center";
-  return (
-    <div className="flex items-center justify-center -space-x-5 md:-space-x-6 mt-5 mb-3">
-      {/* Circle 1 */}
-      <div className={`${circleClasses} w-14 h-14 md:w-16 md:h-16 bg-white/[0.02]`}>
-        <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-gradient-to-br from-red-500/20 to-transparent" />
-      </div>
-      {/* Circle 2 */}
-      <div className={`${circleClasses} w-16 h-16 md:w-[72px] md:h-[72px] bg-white/[0.02] z-10`}>
-        <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-red-400/15 to-transparent" />
-      </div>
-      {/* Circle 3 - Center with Initials */}
-      <div className={`${circleClasses} w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-white/[0.06] to-white/[0.02] z-20 border-white/[0.12] shadow-[0_0_40px_rgba(255,42,42,0.1)]`}>
-        <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-neutral-800 to-neutral-900 flex items-center justify-center border border-white/[0.08]">
-          <span className="text-base md:text-lg font-bold text-white/80 tracking-tight select-none">UD</span>
-        </div>
-      </div>
-      {/* Circle 4 */}
-      <div className={`${circleClasses} w-16 h-16 md:w-[72px] md:h-[72px] bg-white/[0.02] z-10`}>
-        <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-red-400/15 to-transparent" />
-      </div>
-      {/* Circle 5 */}
-      <div className={`${circleClasses} w-14 h-14 md:w-16 md:h-16 bg-white/[0.02]`}>
-        <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-gradient-to-br from-red-500/20 to-transparent" />
-      </div>
-    </div>
-  );
-}
 
 /* ═══════════════════════ Tech Badge ═══════════════════════ */
 function TechBadge({ name, color }: { name: string; color?: string }) {
@@ -338,11 +314,6 @@ export function BentoSection() {
       id="about"
       className="relative w-full py-20 md:py-32 overflow-hidden"
     >
-      {/* Noise overlay */}
-      <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.03] bg-[url('data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20200%20200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.65%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22%2F%3E%3C%2Fsvg%3E')]" />
-
-      {/* Ambient red glow */}
-      <div className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full bg-red-600/[0.025] blur-[180px]" />
 
       <div className="relative z-10 mx-auto max-w-[1200px] px-4 sm:px-6">
         {/* ═══════════════ BENTO GRID ═══════════════ */}
@@ -354,32 +325,40 @@ export function BentoSection() {
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             custom={0}
-            className="bento-card bento-parallax md:col-span-7 p-6 md:p-8 relative overflow-hidden group"
+            className="bento-card bento-parallax md:col-span-7 relative overflow-hidden group"
           >
-
-
-            <div className="relative z-10 flex flex-col h-full">
-              {/* Overlapping circles visual */}
-              <OverlappingCircles />
-
-              <div className="mt-auto pt-6">
-                <div className="flex items-center gap-2.5 mb-3">
-                  <Sparkles className="h-4 w-4 text-white/40" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600">
-                    Partnership
-                  </span>
-                </div>
-
-                <h3 className="text-[15px] md:text-base font-medium text-white/85 leading-relaxed">
-                  I prioritize client success, fostering open communication
+            <TextRevealCard
+              text="You know the business"
+              revealText="I know the Chemistry"
+              className="w-full h-full bg-transparent border-none p-4 md:p-6 flex flex-col items-center justify-center"
+            >
+              <div className="flex flex-col leading-[1.05] tracking-tight max-w-[650px] mb-2 items-center text-center">
+                <h3 className="font-serif font-bold italic text-white text-2xl md:text-3xl lg:text-4xl tracking-tighter">
+                  Helping{" "}
+                  <FlipWords
+                    duration={2000}
+                    words={[
+                      "startups",
+                      "founders",
+                      "creators",
+                      "brands",
+                      "businesses",
+                      "teams",
+                      "innovators",
+                      "companies",
+                      "visionaries",
+                      "entrepreneurs",
+                      "builders",
+                      "agencies",
+                    ]}
+                    className="text-emerald-400 p-0"
+                  />
                 </h3>
-
-                <button className="mt-4 flex items-center gap-2 text-[11px] font-medium text-neutral-400 hover:text-white transition-colors duration-300 group/link">
-                  <span>Book a call</span>
-                  <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover/link:translate-x-0.5" />
-                </button>
+                <p className="font-serif italic text-neutral-500 text-2xl md:text-3xl lg:text-4xl tracking-tight mt-1">
+                  build impactful digital products because
+                </p>
               </div>
-            </div>
+            </TextRevealCard>
           </motion.div>
 
           {/* ──── CARD 2: Tech Stack (Top-Right, tall, spans 2 rows) ──── */}
@@ -418,30 +397,31 @@ export function BentoSection() {
             >
               <div className="relative z-10">
                 <h3 className="font-serif text-base md:text-lg italic text-white/90 leading-snug">
-                  I&apos;m highly adaptable
+                  Seamlessly Syncing
                 </h3>
                 <h3 className="font-serif text-base md:text-lg italic text-white/50 mb-3">
-                  across global time zones
+                  Across Global Time Zones
                 </h3>
 
-                <div className="flex items-center gap-1.5 flex-wrap">
-                {[
-                  { code: "GB", label: "UK" },
-                  { code: "IN", label: "India" },
-                  { code: "US", label: "USA" },
-                ].map((tz) => (
-                  <button
-                    key={tz.code}
-                    onClick={() => setActiveLocation(tz.label)}
-                    className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[9px] font-semibold uppercase tracking-wider border transition-all duration-300 ${activeLocation === tz.label
+                <div className="grid grid-cols-3 gap-1.5 md:flex md:flex-wrap">
+                  {[
+                    { code: "GB", label: "UK" },
+                    { code: "IN", label: "India" },
+                    { code: "US", label: "USA" },
+                  ].map((tz) => (
+                    <button
+                      key={tz.code}
+                      onClick={() => setActiveLocation(tz.label)}
+                      className={`flex items-center justify-center gap-1 rounded-full px-2 py-1 md:px-2.5 text-[8px] md:text-[9px] font-semibold uppercase tracking-wider border transition-all duration-300 ${activeLocation === tz.label
                         ? "border-white/20 bg-white/10 text-white"
                         : "border-white/[0.08] bg-white/[0.03] text-neutral-500 hover:border-white/15 hover:text-neutral-400"
-                      }`}
-                  >
-                    <span>{tz.code}</span>
-                    <span className="text-neutral-600">{tz.label}</span>
-                  </button>
-                ))}
+                        }`}
+                    >
+                      <span>{tz.code}</span>
+                      <span className="text-neutral-600 hidden sm:inline">{tz.label}</span>
+                      <span className="text-neutral-600 sm:hidden">{tz.label.slice(0, 3)}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
 
