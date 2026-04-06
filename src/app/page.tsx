@@ -8,12 +8,14 @@ import { StarsBackground } from "@/components/ui/stars-background";
 import { MapPin, Layers } from "lucide-react";
 import { ConnectSection } from "@/components/connect-section";
 import { BentoSection } from "@/components/bento-section";
+import { MobileNotice } from "@/components/mobile-notice";
 
 import ClickSpark from "@/components/ClickSpark";
 
 export default function Home() {
   return (
     <main className="relative w-full selection:bg-white selection:text-black font-sans overflow-hidden">
+      <MobileNotice />
       <ClickSpark
         sparkColor="#ffffff"
         sparkSize={10}
@@ -30,7 +32,7 @@ export default function Home() {
         {/* ─── Hero Section ─── */}
         <section className="relative min-h-[100dvh] w-full overflow-hidden">
 
-          <div className="relative z-20 flex min-h-[100dvh] w-full flex-col items-center justify-center px-6 py-20 md:pt-40 text-center space-y-10 md:space-y-24">
+          <div className="relative z-20 flex min-h-0 md:min-h-[100dvh] w-full flex-col items-center justify-center px-6 pt-32 pb-4 md:pt-40 text-center space-y-14 md:space-y-24">
 
             {/* Top Badge (Say Hi) */}
             <motion.div
@@ -42,11 +44,11 @@ export default function Home() {
               <HoverBorderGradient
                 containerClassName="rounded-full"
                 as="button"
-                className="bg-black text-[10px] md:text-xs font-semibold text-white px-5 py-2 flex items-center gap-2.5"
+                className="bg-black text-[8px] md:text-xs font-semibold text-white px-4 py-1.5 md:px-5 md:py-2 flex items-center gap-2 md:gap-2.5"
               >
-                <span className="relative flex h-2 w-2">
+                <span className="relative flex h-1.5 w-1.5 md:h-2 md:w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]"></span>
+                  <span className="relative inline-flex h-1.5 w-1.5 md:h-2 md:w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]"></span>
                 </span>
                 <span>Open to work</span>
 
@@ -55,7 +57,7 @@ export default function Home() {
             </motion.div>
 
             {/* Signature Name & Tagline Block */}
-            <div className="flex flex-col items-center space-y-2 md:space-y-4 w-full max-w-7xl mx-auto">
+            <div className="flex flex-col items-center space-y-4 md:space-y-4 w-full max-w-7xl mx-auto">
               <motion.h1
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}

@@ -16,6 +16,7 @@ export const TextRevealCard = ({
   className?: string;
 }) => {
   const [widthPercentage, setWidthPercentage] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const cardRef = useRef<HTMLDivElement | any>(null);
   const [left, setLeft] = useState(0);
   const [localWidth, setLocalWidth] = useState(0);
@@ -30,31 +31,52 @@ export const TextRevealCard = ({
     }
   }, []);
 
-  // Smoother Auto-reveal for Mobile
   useEffect(() => {
-    const isMobile = window.innerWidth < 768;
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  useEffect(() => {
     if (isMobile) {
       let startTime: number | null = null;
-      const duration = 3000; // 3 seconds per cycle
-      
+      const holeTime = 1500; // 1.5s delay
+      const sweepTime = 1500; // 1.5s sweep
+      const totalCycle = (holeTime + sweepTime) * 2;
+
       const animate = (time: number) => {
         if (!startTime) startTime = time;
-        const progress = (time - startTime) % duration;
-        const normalized = progress / duration;
-        
-        // Oscillate between 0 and 100
-        const val = normalized < 0.5 
-          ? normalized * 2 * 100 
-          : (1 - normalized) * 2 * 100;
-          
-        setWidthPercentage(val);
+        const elapsed = (time - startTime) % totalCycle;
+
+        let targetPercentage = 0;
+
+        if (elapsed < holeTime) {
+          // Phase 1: Hold at 0%
+          targetPercentage = 0;
+        } else if (elapsed < holeTime + sweepTime) {
+          // Phase 2: Sweep 0% -> 100%
+          const phaseProgress = (elapsed - holeTime) / sweepTime;
+          // Smooth step easing
+          targetPercentage = phaseProgress * phaseProgress * (3 - 2 * phaseProgress) * 100;
+        } else if (elapsed < holeTime * 2 + sweepTime) {
+          // Phase 3: Hold at 100%
+          targetPercentage = 100;
+        } else {
+          // Phase 4: Sweep 100% -> 0%
+          const phaseProgress = (elapsed - (holeTime * 2 + sweepTime)) / sweepTime;
+          // Smooth step easing
+          targetPercentage = (1 - (phaseProgress * phaseProgress * (3 - 2 * phaseProgress))) * 100;
+        }
+
+        setWidthPercentage(targetPercentage);
         requestAnimationFrame(animate);
       };
-      
+
       const requestRef = requestAnimationFrame(animate);
       return () => cancelAnimationFrame(requestRef);
     }
-  }, []);
+  }, [isMobile]);
 
   function mouseMoveHandler(event: any) {
     event.preventDefault();
@@ -109,24 +131,29 @@ export const TextRevealCard = ({
           animate={
             isMouseOver
               ? {
-                  opacity: widthPercentage > 0 ? 1 : 0,
-                  clipPath: `inset(0 ${100 - widthPercentage}% 0 0)`,
-                }
+                opacity: widthPercentage > 0 ? 1 : 0,
+                clipPath: `inset(0 ${100 - widthPercentage}% 0 0)`,
+              }
               : {
-                  clipPath: `inset(0 ${100 - widthPercentage}% 0 0)`,
-                }
+                clipPath: `inset(0 ${100 - widthPercentage}% 0 0)`,
+              }
           }
-          transition={isMouseOver ? { duration: 0 } : { duration: 0.4 }}
+          transition={isMobile || isMouseOver ? { duration: 0 } : { duration: 0.4 }}
           className="absolute bg-transparent z-20 will-change-transform"
         >
-          <p
+          <div
             style={{
               textShadow: "0 0 20px rgba(239, 68, 68, 0.4)",
             }}
-            className="text-lg sm:text-[2.5rem] md:text-[3rem] py-10 font-bold italic font-serif bg-clip-text text-transparent bg-gradient-to-r from-red-600 via-orange-500 to-red-500 leading-tight whitespace-nowrap"
+            className="text-3xl sm:text-[2.5rem] md:text-[3rem] pt-1 pb-10 font-bold italic font-serif bg-clip-text text-transparent bg-gradient-to-r from-red-600 via-orange-500 to-red-500 leading-tight md:whitespace-nowrap flex flex-col items-center justify-center text-center w-full md:block md:text-left"
           >
-            {revealText}
-          </p>
+            {revealText.split('\n').map((line, idx, arr) => (
+              <React.Fragment key={idx}>
+                <span className="block md:inline">{line}</span>
+                {idx < arr.length - 1 && <span className="hidden md:inline">&nbsp;</span>}
+              </React.Fragment>
+            ))}
+          </div>
         </motion.div>
 
         {/* Vertical Mask Line */}
@@ -136,27 +163,32 @@ export const TextRevealCard = ({
             rotate: `${rotateDeg}deg`,
             opacity: widthPercentage > 0 ? 1 : 0,
           }}
-          transition={isMouseOver ? { duration: 0 } : { duration: 0.4 }}
+          transition={isMobile || isMouseOver ? { duration: 0 } : { duration: 0.4 }}
           className="h-40 w-[2px] bg-gradient-to-b from-transparent via-red-500 to-transparent absolute z-50 will-change-transform"
         ></motion.div>
 
         {/* Original Text Container (Clipped from Left) */}
-        <motion.div 
+        <motion.div
           animate={{
             clipPath: `inset(0 0 0 ${widthPercentage}%)`,
           }}
-          transition={isMouseOver ? { duration: 0 } : { duration: 0.4 }}
+          transition={isMobile || isMouseOver ? { duration: 0 } : { duration: 0.4 }}
           className="overflow-hidden w-full [mask-image:linear-gradient(to_bottom,transparent,white,transparent)]"
         >
-          <p className="text-lg sm:text-[2.5rem] md:text-[3rem] py-10 font-bold italic font-serif bg-clip-text text-transparent bg-[#323238] leading-tight whitespace-nowrap">
-            {text}
-          </p>
+          <div className="text-3xl sm:text-[2.5rem] md:text-[3rem] pt-1 pb-10 font-bold italic font-serif bg-clip-text text-transparent bg-[#52525b] leading-tight md:whitespace-nowrap flex flex-col items-center justify-center text-center w-full md:block md:text-left">
+            {text.split('\n').map((line, idx, arr) => (
+              <React.Fragment key={idx}>
+                <span className="block md:inline">{line}</span>
+                {idx < arr.length - 1 && <span className="hidden md:inline">&nbsp;</span>}
+              </React.Fragment>
+            ))}
+          </div>
           <MemoizedStars />
         </motion.div>
       </div>
 
       {/* "HOVER HERE" Indicator at the bottom */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 hidden md:block">
         <motion.span
           animate={{
             opacity: [0.1, 0.4, 0.1],

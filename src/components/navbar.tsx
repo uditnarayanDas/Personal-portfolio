@@ -140,7 +140,16 @@ export function Navbar() {
           <div className="hidden lg:block w-[1px] h-6 bg-white/10" />
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
+            {/* Mobile Search Toggle */}
+            <button 
+              onClick={() => setCommandOpen(true)}
+              className="flex lg:hidden items-center justify-center p-2 rounded-full text-neutral-300 hover:bg-neutral-800 hover:text-white transition-colors duration-300"
+            >
+              <Search className="w-4 h-4" />
+            </button>
+
+            {/* Mobile Menu Toggle */}
             {/* Mobile Menu Toggle */}
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -171,12 +180,12 @@ export function Navbar() {
         </div>
       </motion.nav>
 
-      {/* Floating Corner Search Button */}
+      {/* Floating Corner Search Button - Hidden on Mobile since it's now in the navbar */}
       <motion.button
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         onClick={() => setCommandOpen(true)}
-        className="fixed top-8 right-8 z-[60] flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-neutral-400 hover:text-white hover:bg-white/10 transition-all duration-300 group shadow-lg floating-search-btn"
+        className="fixed top-8 right-8 z-[60] hidden lg:flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-neutral-400 hover:text-white hover:bg-white/10 transition-all duration-300 group shadow-lg floating-search-btn"
         aria-label="Search"
       >
         <Search className="w-4 h-4 group-hover:scale-110 transition-transform" />

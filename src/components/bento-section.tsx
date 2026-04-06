@@ -26,6 +26,7 @@ import {
   TextRevealCardTitle,
 } from "@/components/ui/text-reveal-card";
 import { FlipWords } from "@/components/ui/flip-words";
+import { Terminal } from "./ui/terminal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -193,7 +194,7 @@ function ServiceMarqueeCard({
    MAIN BENTO SECTION
    ═══════════════════════════════════════════════════════════ */
 export function BentoSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
 
@@ -206,28 +207,6 @@ export function BentoSection() {
     setTimeout(() => setEmailCopied(false), 2000);
   };
 
-  // GSAP parallax
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>(".bento-parallax").forEach((el) => {
-        gsap.fromTo(
-          el,
-          { y: 30 },
-          {
-            y: -15,
-            ease: "none",
-            scrollTrigger: {
-              trigger: el,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1.5,
-            },
-          }
-        );
-      });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
 
   // Cursor glow tracking on bento cards
   useEffect(() => {
@@ -312,181 +291,159 @@ export function BentoSection() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative w-full py-20 md:py-32 overflow-hidden"
+      className="relative w-full pt-4 pb-20 md:py-32 overflow-hidden"
     >
-
       <div className="relative z-10 mx-auto max-w-[1200px] px-4 sm:px-6">
-        {/* ═══════════════ BENTO GRID ═══════════════ */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5">
-
-          {/* ──── CARD 1: Partnership (Top-Left, spans 7 cols) ──── */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            custom={0}
-            className="bento-card bento-parallax md:col-span-7 relative overflow-hidden group"
-          >
-            <TextRevealCard
-              text="You know the business"
-              revealText="I know the Chemistry"
-              className="w-full h-full bg-transparent border-none p-4 md:p-6 flex flex-col items-center justify-center"
-            >
-              <div className="flex flex-col leading-[1.05] tracking-tight max-w-[650px] mb-2 items-center text-center">
-                <h3 className="font-serif font-bold italic text-white text-2xl md:text-3xl lg:text-4xl tracking-tighter">
-                  Helping{" "}
-                  <FlipWords
-                    duration={2000}
-                    words={[
-                      "startups",
-                      "founders",
-                      "creators",
-                      "brands",
-                      "businesses",
-                      "teams",
-                      "innovators",
-                      "companies",
-                      "visionaries",
-                      "entrepreneurs",
-                      "builders",
-                      "agencies",
-                    ]}
-                    className="text-emerald-400 p-0"
-                  />
-                </h3>
-                <p className="font-serif italic text-neutral-500 text-2xl md:text-3xl lg:text-4xl tracking-tight mt-1">
-                  build impactful digital products because
-                </p>
-              </div>
-            </TextRevealCard>
-          </motion.div>
-
-          {/* ──── CARD 2: Tech Stack (Top-Right, tall, spans 2 rows) ──── */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            custom={1}
-            className="bento-card bento-parallax md:col-span-5 md:row-span-2 p-6 md:p-8 relative overflow-hidden group"
-          >
-            <div className="relative z-10">
-              <h3 className="font-serif text-xl md:text-[22px] italic text-white/90 leading-snug">
-                Focused on latest digital
-              </h3>
-              <h3 className="font-serif text-xl md:text-[22px] italic text-white/90 mb-7">
-                innovations
-              </h3>
-
-              <div className="flex flex-wrap gap-2.5">
-                {techStack.map((tech) => (
-                  <TechBadge key={tech.name} name={tech.name} color={tech.color} />
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* ─── Nested Bottom Grid (7 cols) ─── */}
-          <div className="md:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
-            {/* ──── CARD 3: Globe / Time Zones (Bottom-Left) ──── */}
+          {/* LEFT COLUMN */}
+          <div className="md:col-span-7 flex flex-col gap-4 md:gap-5">
             <motion.div
               variants={fadeUp}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
-              custom={2}
-              className="bento-card bento-parallax p-5 md:p-6 relative overflow-hidden min-h-[380px] md:min-h-[400px] group"
+              custom={0}
+              className="bento-card relative overflow-hidden h-[260px] md:h-[290px] p-6 group"
             >
-              <div className="relative z-10">
-                <h3 className="font-serif text-base md:text-lg italic text-white/90 leading-snug">
-                  Seamlessly Syncing
-                </h3>
-                <h3 className="font-serif text-base md:text-lg italic text-white/50 mb-3">
-                  Across Global Time Zones
-                </h3>
-
-                <div className="grid grid-cols-3 gap-1.5 md:flex md:flex-wrap">
-                  {[
-                    { code: "GB", label: "UK" },
-                    { code: "IN", label: "India" },
-                    { code: "US", label: "USA" },
-                  ].map((tz) => (
-                    <button
-                      key={tz.code}
-                      onClick={() => setActiveLocation(tz.label)}
-                      className={`flex items-center justify-center gap-1 rounded-full px-2 py-1 md:px-2.5 text-[8px] md:text-[9px] font-semibold uppercase tracking-wider border transition-all duration-300 ${activeLocation === tz.label
-                        ? "border-white/20 bg-white/10 text-white"
-                        : "border-white/[0.08] bg-white/[0.03] text-neutral-500 hover:border-white/15 hover:text-neutral-400"
-                        }`}
-                    >
-                      <span>{tz.code}</span>
-                      <span className="text-neutral-600 hidden sm:inline">{tz.label}</span>
-                      <span className="text-neutral-600 sm:hidden">{tz.label.slice(0, 3)}</span>
-                    </button>
-                  ))}
+              <TextRevealCard
+                text={"You know\nthe business"}
+                revealText={"I know\nthe Chemistry"}
+                className="w-full h-full bg-transparent border-none p-2 md:p-5 flex flex-col items-center justify-center translate-y-2"
+              >
+                <div className="flex flex-col leading-tight tracking-tight max-w-[650px] mb-4 items-center text-center pt-2">
+                  <h3 className="font-serif font-bold italic text-white text-lg md:text-2xl lg:text-[32px] tracking-tighter">
+                    Helping{" "}
+                    <FlipWords
+                      duration={2000}
+                      words={[
+                        "startups", "founders", "creators", "brands", "businesses",
+                        "teams", "innovators", "companies", "visionaries",
+                        "entrepreneurs", "builders", "agencies",
+                      ]}
+                      className="bg-clip-text text-transparent bg-gradient-to-r from-red-300 via-red-400 to-red-500 p-0"
+                    />
+                  </h3>
+                  <p className="font-serif italic text-neutral-500 text-lg md:text-xl lg:text-[26px] tracking-tight mt-1">
+                    build impactful digital products because
+                  </p>
                 </div>
-              </div>
-
-              <CobeGlobe />
-
-              {/* Location label */}
-              <div className="absolute bottom-5 left-6 z-10 flex flex-col gap-0.5">
-                <span className="text-[8px] font-medium uppercase tracking-[0.15em] text-neutral-600 flex items-center gap-1">
-                  <Globe2 className="h-2.5 w-2.5" /> Remote
-                </span>
-                <motion.span
-                  key={activeLocation}
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-sm font-bold text-white transition-opacity duration-300"
-                >
-                  {activeLocation}
-                </motion.span>
-              </div>
+              </TextRevealCard>
             </motion.div>
 
-            {/* ──── CARD 4: CTA "Let's innovate together" ──── */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+              {/* CARD 3: Globe */}
+              <motion.div
+                variants={fadeUp}
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+                custom={2}
+                className="bento-card p-5 md:p-6 relative overflow-hidden h-[380px] md:h-[400px] flex flex-col group"
+              >
+                <div className="relative z-10 flex flex-col h-full text-center">
+                  <h3 className="font-sans italic font-bold text-lg md:text-xl leading-snug bg-clip-text text-transparent bg-gradient-to-r from-white via-red-100 to-red-300">
+                    I&apos;m highly adaptable
+                  </h3>
+                  <h3 className="font-sans italic font-bold text-xl md:text-2xl leading-none bg-clip-text text-transparent bg-gradient-to-r from-red-300 via-red-400 to-red-500 mb-4 whitespace-nowrap">
+                    across global time zones
+                  </h3>
+                  <div className="flex flex-wrap justify-center gap-2 mb-4">
+                    {[
+                      { code: "GB", label: "UK" },
+                      { code: "IN", label: "India" },
+                      { code: "US", label: "USA" },
+                    ].map((tz) => (
+                      <button
+                        key={tz.code}
+                        onClick={() => setActiveLocation(tz.label)}
+                        className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider border transition-all ${activeLocation === tz.label
+                          ? "border-red-500/50 bg-red-950/30 text-red-500"
+                          : "border-white/[0.08] bg-white/[0.03] text-neutral-500"
+                          }`}
+                      >
+                        {tz.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <CobeGlobe />
+                <div className="absolute bottom-5 left-6 z-10 flex flex-col gap-0.5">
+                  <span className="text-[8px] font-medium uppercase text-neutral-600 flex items-center gap-1">
+                    <Globe2 className="h-2.5 w-2.5" /> Remote
+                  </span>
+                  <motion.span
+                    key={activeLocation}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-sm font-bold text-white"
+                  >
+                    {activeLocation}
+                  </motion.span>
+                </div>
+              </motion.div>
+
+              {/* CARD 4: UD Monogram */}
+              <motion.div
+                variants={fadeUp}
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+                custom={3}
+                className="bento-card p-5 md:p-6 relative overflow-hidden h-[380px] md:h-[400px] flex flex-col items-center justify-center text-center group"
+              >
+                <div className="relative z-10 flex flex-col items-center gap-3">
+                  <span className="text-3xl font-black text-white/90 italic font-serif">UD</span>
+                  <h3 className="text-sm font-semibold text-white/90">Let&apos;s innovate together</h3>
+                  <button
+                    onClick={handleCopyEmail}
+                    className="flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3.5 py-2 text-[10px] font-medium text-neutral-300 hover:text-white transition-all"
+                  >
+                    {emailCopied ? <Check className="h-3 w-3 text-green-400" /> : <Copy className="h-3 w-3" />}
+                    <span>dasuditnarayan9@gmail.com</span>
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN */}
+          <div className="md:col-span-5 flex flex-col gap-4 md:gap-5">
             <motion.div
               variants={fadeUp}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
-              custom={3}
-              className="bento-card bento-parallax p-5 md:p-6 relative overflow-hidden flex flex-col items-center justify-center text-center group"
+              custom={1}
+              className="bento-card p-6 md:p-8 relative overflow-hidden h-[580px] md:h-[710px] group flex flex-col"
             >
-              <div className="relative z-10 flex flex-col items-center gap-3">
-                {/* Monogram */}
-                <div className="flex items-center justify-center">
-                  <span className="text-3xl font-black text-white/90 tracking-tighter select-none italic font-serif">
-                    UD
-                  </span>
-                </div>
-
-                <h3 className="text-sm md:text-[15px] font-semibold text-white/90 leading-snug">
-                  Let&apos;s innovate together
+              <div className="relative z-10 flex flex-col items-center text-center h-full pt-1.5 overflow-hidden">
+                <h3 className="font-sans italic font-bold text-lg md:text-xl leading-snug bg-clip-text text-transparent bg-gradient-to-r from-white via-red-100 to-red-300 flex-shrink-0">
+                  Building with the latest
                 </h3>
-                <p className="text-[11px] text-neutral-500 leading-relaxed">
-                  Ready to bring your vision to life?
-                </p>
-
-                <button
-                  onClick={handleCopyEmail}
-                  className="flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3.5 py-2 text-[11px] font-medium text-neutral-300 hover:border-white/15 hover:bg-white/[0.06] hover:text-white transition-all duration-300"
-                >
-                  {emailCopied ? (
-                    <Check className="h-3 w-3 text-green-400" />
-                  ) : (
-                    <Copy className="h-3 w-3" />
-                  )}
-                  <span className="text-[10px]">dasuditnarayan9@gmail.com</span>
-                </button>
-
-                <span className="text-[9px] text-neutral-600 mt-1">
-                  Get in touch via email
-                </span>
+                <h3 className="font-sans italic font-bold text-xl md:text-2xl leading-none bg-clip-text text-transparent bg-gradient-to-r from-red-300 via-red-400 to-red-500 mb-5 flex-shrink-0">
+                  technologies
+                </h3>
+                <div className="flex flex-wrap gap-2 justify-center mb-5 flex-shrink-0">
+                  {techStack.map((tech) => (
+                    <TechBadge key={tech.name} name={tech.name} color={tech.color} />
+                  ))}
+                </div>
+                <div className="w-full flex-1 min-h-0 overflow-hidden opacity-90 scale-[0.95] origin-top">
+                  <Terminal
+                    commands={["whoami", "cat about.txt", "ls projects/", "cat skills.json", "echo $CAREER_GOAL"]}
+                    outputs={{
+                      0: ["Uditnarayan Das"],
+                      1: ["Passionate fresher focused on AI, full-stack development, and building useful real-world products."],
+                      2: ["Jarvis-Voice-Assistant  Vocra-AI-Interviewer", "CampConnect              Pygame-Projects"],
+                      3: ["[\"Python\", \"React\", \"JavaScript\", \"PyTorch\", \"TensorFlow\", \"HuggingFace\", \"Flask\"]"],
+                      4: ["AI Engineer"]
+                    }}
+                    username="udit@ai-portfolio"
+                    className="w-full h-full"
+                  />
+                </div>
               </div>
             </motion.div>
           </div>
 
-          {/* ──── CARD 6: Scrolling Services (Full-width) ──── */}
-          <motion.div
+          {/* CARD 6: Scrolling Services */}
+          {/* <motion.div
             variants={fadeUp}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
@@ -503,19 +460,14 @@ export function BentoSection() {
                 </h3>
               </div>
             </div>
-
-            {/* Infinite Marquee */}
             <div className="relative overflow-hidden">
-              {/* Fade edges */}
               <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-r from-black to-transparent" />
               <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-l from-black to-transparent" />
-
               <div
                 ref={marqueeRef}
                 className="flex gap-4 will-change-transform"
                 style={{ width: "max-content" }}
               >
-                {/* Duplicate services for seamless loop */}
                 {[...services, ...services].map((s, i) => (
                   <ServiceMarqueeCard
                     key={`${s.title}-${i}`}
@@ -525,7 +477,7 @@ export function BentoSection() {
                 ))}
               </div>
             </div>
-          </motion.div>
+          </motion.div> */}
         </div>
       </div>
     </section>
