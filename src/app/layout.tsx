@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { MusicPlayer } from "@/components/music-player";
+import ClickSpark from "@/components/ClickSpark";
 
 import { Navbar } from "@/components/navbar";
 
@@ -37,12 +38,19 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col font-sans">
-        <Navbar />
-        <div id="app-content" className="flex-1 flex flex-col">
-          {children}
-        </div>
-        <MusicPlayer />
-
+        <ClickSpark
+          sparkColor="#ffffff"
+          sparkSize={10}
+          sparkRadius={15}
+          sparkCount={8}
+          duration={400}
+        >
+          <Navbar />
+          <div id="app-content" className="flex-1 flex flex-col">
+            {children}
+          </div>
+          <MusicPlayer />
+        </ClickSpark>
       </body>
     </html>
   );

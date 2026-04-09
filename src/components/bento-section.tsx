@@ -147,14 +147,41 @@ function CobeGlobe() {
 
 
 /* ═══════════════════════ Tech Badge ═══════════════════════ */
-function TechBadge({ name, color }: { name: string; color?: string }) {
+function TechBadge({ name, color, icon }: { name: string; color?: string; icon?: string }) {
   return (
     <div className="flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3.5 py-[7px] text-[11px] font-medium text-neutral-300 transition-all duration-300 hover:border-white/15 hover:bg-white/[0.06] hover:text-white select-none whitespace-nowrap">
-      <span
-        className="h-2 w-2 rounded-full flex-shrink-0"
-        style={{ backgroundColor: color || "#ff2a2a" }}
-      />
+      {icon ? (
+        <img
+          src={`https://cdn.simpleicons.org/${icon}/${color?.replace('#', '') || 'white'}`}
+          alt={name}
+          className="h-3 w-3 flex-shrink-0 opacity-90 group-hover:opacity-100 transition-opacity"
+        />
+      ) : (
+        <span
+          className="h-2 w-2 rounded-full flex-shrink-0"
+          style={{ backgroundColor: color || "#ff2a2a" }}
+        />
+      )}
       <span>{name}</span>
+    </div>
+  );
+}
+
+/* ═══════════════════════ Marquee Row ═══════════════════════ */
+function Marquee({ items, direction = "left", speed = 20 }: { items: { name: string; color: string; icon?: string }[], direction?: "left" | "right", speed?: number }) {
+  return (
+    <div className="flex w-full overflow-hidden py-0.5 [mask-image:linear-gradient(to_right,transparent,white_15%,white_85%,transparent)]">
+      <motion.div
+        initial={{ x: direction === "left" ? 0 : "-50%" }}
+        animate={{ x: direction === "left" ? "-50%" : 0 }}
+        transition={{ duration: speed, repeat: Infinity, ease: "linear" }}
+        className="flex flex-nowrap min-w-max gap-3 px-1.5"
+      >
+        {/* Render items twice for seamless loop */}
+        {[...items, ...items].map((tech, i) => (
+          <TechBadge key={`${tech.name}-${i}`} name={tech.name} color={tech.color} icon={tech.icon} />
+        ))}
+      </motion.div>
     </div>
   );
 }
@@ -248,19 +275,34 @@ export function BentoSection() {
     return () => cancelAnimationFrame(animId);
   }, []);
 
-  const techStack = [
-    { name: "Next.js", color: "#ffffff" },
-    { name: "TypeScript", color: "#3178c6" },
-    { name: "Tailwind", color: "#38bdf8" },
-    { name: "Motion", color: "#f5c518" },
-    { name: "Prisma", color: "#5a67d8" },
-    { name: "Zustand", color: "#453f39" },
-    { name: "AWS", color: "#ff9900" },
-    { name: "Docker", color: "#2496ed" },
-    { name: "React Query", color: "#ff4154" },
-    { name: "React Router", color: "#f44250" },
-    { name: "Supabase", color: "#3ecf8e" },
-    { name: "Zod", color: "#3068b7" },
+  const techStack1 = [
+    { name: "Next.js", icon: "nextdotjs", color: "#ffffff" },
+    { name: "React", icon: "react", color: "#61dafb" },
+    { name: "TypeScript", icon: "typescript", color: "#3178c6" },
+    { name: "Tailwind", icon: "tailwindcss", color: "#38bdf8" },
+    { name: "Framer Motion", icon: "framer", color: "#ffffff" },
+    { name: "GSAP", icon: "greensock", color: "#88ce02" },
+    { name: "Lucide", icon: "lucide", color: "#f24e1e" },
+  ];
+
+  const techStack2 = [
+    { name: "Node.js", icon: "nodedotjs", color: "#339933" },
+    { name: "Prisma", icon: "prisma", color: "#ffffff" },
+    { name: "Zustand", icon: "zustand", color: "#453f39" },
+    { name: "AWS", icon: "amazonaws", color: "#ff9900" },
+    { name: "Docker", icon: "docker", color: "#2496ed" },
+    { name: "PostgreSQL", icon: "postgresql", color: "#336791" },
+    { name: "Redis", icon: "redis", color: "#dc382d" },
+  ];
+
+  const techStack3 = [
+    { name: "React Query", icon: "reactquery", color: "#ff4154" },
+    { name: "React Router", icon: "reactrouter", color: "#f44250" },
+    { name: "Supabase", icon: "supabase", color: "#3ecf8e" },
+    { name: "Zod", icon: "zod", color: "#3068b7" },
+    { name: "Clerk", icon: "clerk", color: "#6c47ff" },
+    { name: "Stripe", icon: "stripe", color: "#635bff" },
+    { name: "Vercel", icon: "vercel", color: "#ffffff" },
   ];
 
   const services = [
@@ -338,7 +380,7 @@ export function BentoSection() {
                 custom={2}
                 className="bento-card p-5 md:p-6 relative overflow-hidden h-[380px] md:h-[400px] flex flex-col group"
               >
-                <div className="relative z-10 flex flex-col h-full text-center">
+                <div className="relative z-10 flex flex-col text-center">
                   <h3 className="font-sans italic font-bold text-lg md:text-xl leading-snug bg-clip-text text-transparent bg-gradient-to-r from-white via-red-100 to-red-300">
                     I&apos;m highly adaptable
                   </h3>
@@ -380,24 +422,139 @@ export function BentoSection() {
                 </div>
               </motion.div>
 
-              {/* CARD 4: UD Monogram */}
+              {/* CARD 4: UD Tesseract 3D Core */}
               <motion.div
                 variants={fadeUp}
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
                 custom={3}
-                className="bento-card p-5 md:p-6 relative overflow-hidden h-[380px] md:h-[400px] flex flex-col items-center justify-center text-center group"
+                className="bento-card p-0 relative h-[380px] md:h-[400px] flex flex-col group bg-[#020202] border-white/10 overflow-hidden"
+                onMouseMove={(e) => {
+                  const target = e.currentTarget;
+                  const rect = target.getBoundingClientRect();
+                  const x = (e.clientX - rect.left) / rect.width - 0.5;
+                  const y = (e.clientY - rect.top) / rect.height - 0.5;
+                  // Map mouse coordinates to rotation values
+                  target.style.setProperty("--rx", `${-y * 50}deg`);
+                  target.style.setProperty("--ry", `${x * 50}deg`);
+                  target.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+                  target.style.setProperty("--my", `${e.clientY - rect.top}px`);
+                }}
+                onMouseLeave={(e) => {
+                  const target = e.currentTarget;
+                  target.style.setProperty("--rx", `0deg`);
+                  target.style.setProperty("--ry", `0deg`);
+                }}
+                style={{ perspective: "1000px" }}
               >
-                <div className="relative z-10 flex flex-col items-center gap-3">
-                  <span className="text-3xl font-black text-white/90 italic font-serif">UD</span>
-                  <h3 className="text-sm font-semibold text-white/90">Let&apos;s innovate together</h3>
-                  <button
-                    onClick={handleCopyEmail}
-                    className="flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3.5 py-2 text-[10px] font-medium text-neutral-300 hover:text-white transition-all"
-                  >
-                    {emailCopied ? <Check className="h-3 w-3 text-green-400" /> : <Copy className="h-3 w-3" />}
-                    <span>dasuditnarayan9@gmail.com</span>
-                  </button>
+                {/* 1. Mouse Follower Background Glow (2D, Wall layer) */}
+                <div 
+                  className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                  style={{
+                    background: "radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 0, 0, 0.2), transparent 60%)"
+                  }}
+                />
+
+                {/* 2. The 3D Preserve Container (Everything inside rotates together) */}
+                <div 
+                  className="w-full h-full absolute inset-0 flex items-center justify-center transition-transform duration-[400ms] ease-out pointer-events-none"
+                  style={{ 
+                    transform: "rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))", 
+                    transformStyle: "preserve-3d" 
+                  }}
+                >
+                  {/* LAYER -150px: Deep Blackhole Void */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ transform: "translateZ(-150px)" }}>
+                    <div className="w-[300px] h-[300px] rounded-full border border-red-500/10 bg-red-950/20 blur-xl animate-[spin_10s_linear_infinite]" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] rounded-full bg-red-600/10 blur-3xl group-hover:bg-red-600/30 group-hover:scale-150 transition-all duration-1000 animate-pulse" />
+                  </div>
+
+                  {/* LAYER -80px: Glowing Rotating Rings / Matrix Data */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ transform: "translateZ(-80px)" }}>
+                    <div className="w-[280px] h-[280px] rounded-full border-2 border-dashed border-red-500/20 animate-[spin_20s_linear_infinite]" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] rounded-full border border-white/5 animate-[spin_15s_linear_infinite_reverse]" />
+                    
+                    {/* Far background Text */}
+                    <div className="absolute -top-10 -left-10 text-[8px] font-mono text-red-500/30 font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-100">
+                      SYS.OVERRIDE_ENABLED
+                    </div>
+                  </div>
+
+                  {/* LAYER -40px: Infinite Mirrors / Echoes of the Monogram */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40 group-hover:opacity-100 transition-opacity duration-700" style={{ transform: "translateZ(-40px)" }}>
+                    <span className="text-8xl font-black italic font-serif text-transparent bg-clip-text bg-gradient-to-b from-red-500/20 to-transparent blur-md scale-[1.3] group-hover:scale-[1.8] group-hover:from-red-600/40 transition-all duration-1000">
+                      UD
+                    </span>
+                  </div>
+
+                  {/* LAYER 0: The Core Glass Monogram (The physical object) */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ transform: "translateZ(20px)" }}>
+                    <div className="relative w-40 h-40 flex items-center justify-center group/core">
+                      {/* The Glass Cube */}
+                      <div className="absolute inset-0 bg-white/[0.03] border border-white/10 rounded-2xl backdrop-blur-md shadow-[0_0_50px_rgba(255,0,0,0.1)] group-hover:shadow-[0_0_80px_rgba(255,0,0,0.4)] transition-all duration-500 group-hover:border-red-500/30 overflow-hidden">
+                        {/* Scanning Laser Line inside the glass */}
+                        <motion.div 
+                          className="absolute left-0 right-0 h-px bg-red-400 shadow-[0_0_15px_red] opacity-0 group-hover:opacity-100 transition-opacity"
+                          animate={{ top: ["0%", "100%", "0%"] }}
+                          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                        />
+                      </div>
+                      
+                      {/* The Monogram */}
+                      <span className="relative z-10 text-6xl font-black italic font-serif text-transparent bg-clip-text bg-gradient-to-br from-white via-neutral-100 to-neutral-400 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] group-hover:from-white group-hover:via-red-100 group-hover:to-red-600 transition-all duration-500 select-none">
+                        UD
+                      </span>
+
+                      {/* Sci-fi corners */}
+                      <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-red-500/50 rounded-tl-xl transition-all duration-500 group-hover:w-8 group-hover:h-8" />
+                      <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-red-500/50 rounded-tr-xl transition-all duration-500 group-hover:w-8 group-hover:h-8" />
+                      <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-red-500/50 rounded-bl-xl transition-all duration-500 group-hover:w-8 group-hover:h-8" />
+                      <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-red-500/50 rounded-br-xl transition-all duration-500 group-hover:w-8 group-hover:h-8" />
+                    </div>
+                  </div>
+
+                  {/* LAYER 60px: Floating Overlays / Target sights */}
+                  <div className="absolute inset-0 pointer-events-none flex items-center justify-center" style={{ transform: "translateZ(60px)" }}>
+                    <div className="w-[180px] h-[180px] border border-white/5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-[1s]" />
+                    {/* Crosshairs & HUD Elements */}
+                    <div className="absolute top-[20%] left-[20%] w-2 h-2 bg-red-500 shadow-[0_0_10px_red] rounded-full animate-ping pointer-events-none" />
+                    <div className="absolute bottom-[30%] right-[30%] w-1.5 h-1.5 bg-white shadow-[0_0_10px_white] rounded-full animate-pulse pointer-events-none" />
+                    
+                    <div className="absolute top-[35%] right-[25%] opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-300">
+                       <span className="text-[7px] font-mono text-red-400 rotate-90 block">TRACKING...</span>
+                    </div>
+                  </div>
+
+                  {/* LAYER 100px: Extreme Foreground Action Button & Readouts */}
+                  <div className="absolute inset-x-0 bottom-0 top-0 flex flex-col justify-between p-6 pointer-events-none" style={{ transform: "translateZ(100px)" }}>
+                    {/* Top Topo Readouts */}
+                    <div className="flex justify-between items-start opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                      <div className="flex flex-col gap-1 backdrop-blur-sm bg-black/20 p-2 rounded border border-white/5 group-hover:border-red-500/20">
+                        <span className="text-[8px] font-mono font-bold text-red-500 tracking-widest flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                          DIMENSIONAL SYNC
+                        </span>
+                        <span className="text-[10px] font-mono text-white/80 animate-pulse">LOCK_ACQUIRED</span>
+                      </div>
+                      
+                      <div className="text-[8px] font-mono text-neutral-500 text-right backdrop-blur-sm bg-black/20 p-2 rounded border border-white/5">
+                        <div>Z-INDEX: <span className="text-white">- 150</span></div>
+                        <div className="text-red-400 animate-pulse">awaiting_input_</div>
+                      </div>
+                    </div>
+
+                    {/* Button floating at the very front */}
+                    <div className="flex justify-center mt-auto pb-4 pointer-events-auto">
+                      <button
+                        onClick={handleCopyEmail}
+                        className="group/btn flex gap-2 items-center rounded-full border border-red-500/30 bg-black/60 backdrop-blur-xl px-5 py-3 text-[10px] font-bold uppercase tracking-[0.2em] text-white hover:bg-white/10 hover:border-red-500 transition-all shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:shadow-[0_0_30px_rgba(255,0,0,0.6)] hover:scale-[1.02] active:scale-95"
+                      >
+                        {emailCopied ? <Check className="h-4 w-4 text-red-500" /> : <Database className="h-4 w-4 text-red-400 group-hover/btn:text-white transition-colors animate-pulse" />}
+                        <span>{emailCopied ? "Connection Established" : "Extract Data"}</span>
+                      </button>
+                    </div>
+                  </div>
+
                 </div>
               </motion.div>
             </div>
@@ -419,10 +576,10 @@ export function BentoSection() {
                 <h3 className="font-sans italic font-bold text-xl md:text-2xl leading-none bg-clip-text text-transparent bg-gradient-to-r from-red-300 via-red-400 to-red-500 mb-5 flex-shrink-0">
                   technologies
                 </h3>
-                <div className="flex flex-wrap gap-2 justify-center mb-5 flex-shrink-0">
-                  {techStack.map((tech) => (
-                    <TechBadge key={tech.name} name={tech.name} color={tech.color} />
-                  ))}
+                <div className="w-full flex flex-col gap-2 mb-6 flex-shrink-0 relative">
+                  <Marquee items={techStack1} direction="left" speed={25} />
+                  <Marquee items={techStack2} direction="right" speed={30} />
+                  <Marquee items={techStack3} direction="left" speed={28} />
                 </div>
                 <div className="w-full flex-1 min-h-0 overflow-hidden opacity-90 scale-[0.95] origin-top">
                   <Terminal
