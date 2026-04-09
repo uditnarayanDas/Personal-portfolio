@@ -49,6 +49,23 @@ export function Navbar() {
     <>
       <CommandMenu open={commandOpen} setOpen={setCommandOpen} />
 
+      {/* 
+        PREMIUM SCROLL BLUR MASK 
+        Content dynamically blurs and fades to black as it scrolls under the navbar.
+      */}
+      <div 
+        className="pointer-events-none fixed top-0 left-0 right-0 h-28 md:h-36 z-[39] bg-gradient-to-b from-[#0a0a0a]/90 via-[#0a0a0a]/50 to-transparent"
+      />
+      <div 
+        className="pointer-events-none fixed top-0 left-0 right-0 h-28 md:h-36 z-40"
+        style={{
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          maskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
+        }}
+      />
+
       <motion.nav
         id="navbar"
         initial={{ x: "-50%", y: -80, opacity: 0 }}
