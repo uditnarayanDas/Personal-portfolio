@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/text-reveal-card";
 import { FlipWords } from "@/components/ui/flip-words";
 import { Terminal } from "./ui/terminal";
+import SmoothTab from "@/components/kokonutui/smooth-tab";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -422,32 +423,23 @@ export function BentoSection() {
                 </div>
               </motion.div>
 
-              {/* CARD 4: UD Monogram */}
+              {/* CARD 4: Steps How I Work */}
               <motion.div
                 variants={fadeUp}
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
                 custom={3}
-                className="bento-card p-0 relative overflow-hidden h-[380px] md:h-[400px] flex flex-col items-center justify-center text-center group"
+                className="bento-card p-0 relative overflow-hidden h-[380px] md:h-[400px] flex flex-col group"
               >
-                <div className="absolute inset-0 z-0 pointer-events-auto">
-                  <iframe
-                    src="https://my.spline.design/clonercubesimplecopy-CqABTOy1yoBk7gZBfFbdJy3h/"
-                    frameBorder="0"
-                    width="70%"
-                    height="70%"
-                    className="w-full h-full"
-                  />
+                {/* How I Work Title */}
+                <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none w-max">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] bg-clip-text text-transparent bg-gradient-to-r from-red-300 via-red-400 to-red-500 flex items-center gap-2">
+                    <Sparkles className="w-3 h-3 text-red-500" /> Workflow
+                  </span>
                 </div>
 
-                <div className="absolute bottom-6 z-10 pointer-events-none">
-                  <button
-                    onClick={handleCopyEmail}
-                    className="pointer-events-auto flex items-center gap-2 rounded-full border border-white/10 bg-black/50 backdrop-blur-md px-4 py-2.5 text-[10px] font-medium text-neutral-300 hover:text-white transition-all shadow-xl"
-                  >
-                    {emailCopied ? <Check className="h-3 w-3 text-green-400" /> : <Copy className="h-3 w-3" />}
-                    <span>dasuditnarayan9@gmail.com</span>
-                  </button>
+                <div className="absolute inset-0 z-0 pointer-events-auto">
+                  <SmoothTab />
                 </div>
               </motion.div>
             </div>
