@@ -8,11 +8,12 @@ import { StarsBackground } from "@/components/ui/stars-background";
 import { MapPin, Layers } from "lucide-react";
 import { ConnectSection } from "@/components/connect-section";
 import { BentoSection } from "@/components/bento-section";
+import { WorkSection } from "@/components/work-section";
 import { MobileNotice } from "@/components/mobile-notice";
 
 export default function Home() {
   return (
-    <main className="relative w-full selection:bg-white selection:text-black font-sans overflow-hidden">
+    <main className="relative w-full selection:bg-white selection:text-black font-sans overflow-x-clip">
       <MobileNotice />
       {/* ─── Global Background Stack ─── */}
       <div className="fixed inset-0 bg-black z-[-10]" />
@@ -81,6 +82,7 @@ export default function Home() {
       </section>
 
       <BentoSection />
+      <WorkSection />
     </main>
   );
 }
