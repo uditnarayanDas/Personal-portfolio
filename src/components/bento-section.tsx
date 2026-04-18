@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "motion/react";
+import { motion, useInView, AnimatePresence } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/text-reveal-card";
 import { FlipWords } from "@/components/ui/flip-words";
 import { Terminal } from "./ui/terminal";
-import SmoothTab from "@/components/kokonutui/smooth-tab";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -146,6 +145,60 @@ function CobeGlobe() {
   );
 }
 
+
+/* ═══════════════════════ Workflow Auto Card ═══════════════════════ */
+function WorkflowAutoCard() {
+  const [activeStep, setActiveStep] = useState(0);
+
+  const steps = [
+    { title: "Understand & Plan", desc: "Deep dive into requirements and architecture mapping." },
+    { title: "Crafting UX/UI", desc: "Designing pixel-perfect, dynamic interfaces." },
+    { title: "Scalable Code", desc: "Writing clean, maintainable, and robust code architectures." },
+    { title: "Launch & Optimize", desc: "Seamless deployment and continuous performance refinement." }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % steps.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 flex flex-col items-center justify-center pt-8 z-10 w-full h-full px-5">
+      <div className="relative w-full h-[60px] md:h-[70px] flex items-center justify-center">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeStep}
+            initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-0 flex flex-col items-center justify-center text-center mt-2"
+          >
+            <h3 className="font-sans font-semibold text-[13px] md:text-[15px] text-white/95 mb-1.5 leading-tight tracking-wide">
+              {steps[activeStep].title}
+            </h3>
+            <p className="text-neutral-400/90 text-[10px] md:text-[11px] leading-relaxed max-w-[95%] md:max-w-[85%] mx-auto">
+              {steps[activeStep].desc}
+            </p>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      <div className="flex justify-center gap-1.5 mt-4 relative z-20">
+        {steps.map((_, i) => (
+          <div
+            key={i}
+            className={`h-1 rounded-full transition-all duration-300 ease-out ${
+              i === activeStep ? "w-6 bg-white" : "w-1.5 bg-white/10"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 /* ═══════════════════════ Tech Badge ═══════════════════════ */
 function TechBadge({ name, color, icon }: { name: string; color?: string; icon?: string }) {
@@ -439,7 +492,7 @@ export function BentoSection() {
                 </div>
 
                 <div className="absolute inset-0 z-0 pointer-events-auto">
-                  <SmoothTab />
+                  <WorkflowAutoCard />
                 </div>
               </motion.div>
             </div>
