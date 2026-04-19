@@ -1,25 +1,10 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useInView, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useInView } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import {
-  Heart,
-  Mail,
-  Copy,
-  Check,
-  ArrowRight,
-  Globe2,
-  Code2,
-  Palette,
-  Smartphone,
-  Server,
-  Database,
-  Zap,
-  Sparkles,
-  ShieldCheck,
-} from "lucide-react";
+import { Mail, Copy, Check, Globe2, FileText, Download } from "lucide-react";
 import {
   TextRevealCard,
   TextRevealCardDescription,
@@ -146,56 +131,220 @@ function CobeGlobe() {
 }
 
 
-/* ═══════════════════════ Workflow Auto Card ═══════════════════════ */
-function WorkflowAutoCard() {
-  const [activeStep, setActiveStep] = useState(0);
+/* ═══════════════════════ iOS Widget Card ═══════════════════════ */
+function AppIcon({
+  bg,
+  iconSrc,
+  alt,
+}: {
+  bg: string;
+  iconSrc: string;
+  alt: string;
+}) {
+  return (
+    <div
+      className="w-[44px] h-[44px] sm:w-[50px] sm:h-[50px] rounded-[14px] flex items-center justify-center shadow-md overflow-hidden flex-shrink-0 transition-transform hover:scale-105"
+      style={{ background: bg }}
+    >
+      <img src={iconSrc} alt={alt} className="w-6 h-6 sm:w-7 sm:h-7" />
+    </div>
+  );
+}
 
-  const steps = [
-    { title: "Understand & Plan", desc: "Deep dive into requirements and architecture mapping." },
-    { title: "Crafting UX/UI", desc: "Designing pixel-perfect, dynamic interfaces." },
-    { title: "Scalable Code", desc: "Writing clean, maintainable, and robust code architectures." },
-    { title: "Launch & Optimize", desc: "Seamless deployment and continuous performance refinement." }
-  ];
+/* ═══════════════════════ Notification Stack ═══════════════════════ */
+const PROJECTS = [
+  {
+    id: "vocra",
+    app: "VOCRA AI",
+    iconSrc: "https://cdn.simpleicons.org/openai/ffffff",
+    iconBg: "linear-gradient(135deg,#000000,#222222)",
+    time: "now",
+    body: "Interview session finished — candidate scored 94% accuracy",
+  },
+  {
+    id: "camp",
+    app: "CAMPCONNECT",
+    iconSrc: "https://cdn.simpleicons.org/firebase/ffffff",
+    iconBg: "linear-gradient(135deg,#e65c00,#F9D423)",
+    time: "2m",
+    body: "15 students enrolled in your ML Bootcamp session today",
+  },
+  {
+    id: "jarvis",
+    app: "JARVIS VOICE",
+    iconSrc: "https://cdn.simpleicons.org/amazonalexa/ffffff",
+    iconBg: "linear-gradient(135deg,#000000,#0f172a)",
+    time: "5m",
+    body: 'Voice command triggered — "Deploy to production" ✓',
+  },
+  {
+    id: "portfolio",
+    app: "PORTFOLIO",
+    iconSrc: "https://cdn.simpleicons.org/vercel/ffffff",
+    iconBg: "linear-gradient(135deg,#000000,#434343)",
+    time: "8m",
+    body: "New visitor from San Francisco viewed your portfolio",
+  },
+] as const;
+
+type Project = (typeof PROJECTS)[number];
+
+function NotificationStack() {
+  const [active, setActive] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % steps.length);
-    }, 4000);
-    return () => clearInterval(timer);
+    const id = setInterval(() => {
+      setActive((a) => (a + 1) % PROJECTS.length);
+    }, 3800);
+    return () => clearInterval(id);
   }, []);
 
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center pt-8 z-10 w-full h-full px-5">
-      <div className="relative w-full h-[60px] md:h-[70px] flex items-center justify-center">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeStep}
-            initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-0 flex flex-col items-center justify-center text-center mt-2"
-          >
-            <h3 className="font-sans font-semibold text-[13px] md:text-[15px] text-white/95 mb-1.5 leading-tight tracking-wide">
-              {steps[activeStep].title}
-            </h3>
-            <p className="text-neutral-400/90 text-[10px] md:text-[11px] leading-relaxed max-w-[95%] md:max-w-[85%] mx-auto">
-              {steps[activeStep].desc}
-            </p>
-          </motion.div>
-        </AnimatePresence>
+    <div className="relative flex-col items-center flex-shrink-0 w-full" style={{ height: "70px" }}>
+      <div className="absolute top-0 left-0 right-0 h-[64px] perspective-1000">
+        {PROJECTS.map((notif, index) => {
+          // Calculate offset relative to the active card
+          const offset = (index - active + PROJECTS.length) % PROJECTS.length;
+
+          // offset 0 is front card.
+          // offset length-1 is the card that just transitioned out of the front
+          const isLeaving = offset === PROJECTS.length - 1;
+
+          return (
+            <motion.div
+              key={notif.id}
+              className="absolute inset-x-2 sm:inset-x-[10px] top-0 bottom-0 rounded-[14px] overflow-hidden border border-white/[0.10]"
+              style={{
+                background: "rgba(255,255,255,0.06)", // standard card color
+                backdropFilter: "blur(12px)",
+                transformOrigin: "top center",
+              }}
+              animate={{
+                top: isLeaving ? 24 : offset * -7,
+                scaleX: isLeaving ? 0.95 : 1 - offset * 0.05,
+                opacity: isLeaving ? 0 : 1 - offset * 0.35,
+                zIndex: PROJECTS.length - offset,
+              }}
+              transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+            >
+              <div className="flex items-start gap-2.5 h-full px-2.5 py-2 cursor-pointer hover:bg-white/[0.02] transition-colors">
+                {/* App icon */}
+                <div
+                  className="w-7 h-7 rounded-[7px] flex-shrink-0 flex items-center justify-center shadow-sm"
+                  style={{ background: notif.iconBg, marginTop: '2px' }}
+                >
+                  <img src={notif.iconSrc} alt={notif.app} className="w-[14px] h-[14px] drop-shadow-md" />
+                </div>
+
+                {/* Text content - Shrink sizes for cleaner fit */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between mt-[-1px] mb-[2px]">
+                    <span className="text-[8px] font-bold text-white/90 uppercase tracking-[0.08em] truncate">
+                      {notif.app}
+                    </span>
+                    <span className="text-[7.5px] text-white/50 font-medium ml-2 flex-shrink-0">{notif.time}</span>
+                  </div>
+                  <p className="text-[8.5px] text-white/75 leading-[1.35] line-clamp-2 pr-1">
+                    {notif.body}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════ iOS Widget Card ═══════════════════════ */
+function IOSWidgetsCard() {
+  return (
+    <div className="absolute inset-0 p-3 flex flex-col gap-[14px] overflow-hidden select-none">
+
+      {/* ── ROW 1: Contact card (left) + 2×2 bottom-anchored icons (right) ── */}
+      <div className="flex gap-2" style={{ flex: "1 1 0", minHeight: 0 }}>
+
+        {/* Contact card */}
+        <div className="flex-1 rounded-[18px] bg-white/[0.08] hover:bg-white/[0.12] transition-colors cursor-pointer border border-white/[0.10] p-2.5 sm:p-3 flex flex-col min-w-0 overflow-hidden">
+          {/* Avatar — centered horizontally */}
+          <div className="w-[44px] h-[44px] sm:w-[50px] sm:h-[50px] rounded-full overflow-hidden border-2 border-white/15 shadow-lg mx-auto flex-shrink-0 transition-transform hover:scale-105">
+            <img src="/avatar-ud.png" alt="Uditnarayan Das" className="w-full h-full object-cover" />
+          </div>
+          {/* Push name to bottom */}
+          <div className="flex-1" />
+          {/* Status dots */}
+          <div className="flex gap-[4px] sm:gap-[5px] mb-1.5 mt-2">
+            <span className="w-1.5 h-1.5 sm:w-[7px] sm:h-[7px] rounded-full bg-green-400" />
+            <span className="w-1.5 h-1.5 sm:w-[7px] sm:h-[7px] rounded-full bg-yellow-400" />
+            <span className="w-1.5 h-1.5 sm:w-[7px] sm:h-[7px] rounded-full bg-orange-400" />
+          </div>
+          {/* Name / email */}
+          <p className="text-[10px] sm:text-[11px] font-semibold text-white leading-tight truncate">Uditnarayan Das</p>
+          <p className="text-[8px] sm:text-[9px] text-white/50 mt-0.5 truncate">udit@portfolio.dev</p>
+        </div>
+
+        {/* 2×2 icons — bottom-anchored */}
+        <div className="flex flex-col justify-end gap-[5px] sm:gap-[7px] flex-shrink-0 h-full">
+          <div className="flex gap-[5px] sm:gap-[7px]">
+            <AppIcon bg="linear-gradient(145deg,#1e3a2f,#2a5c40)" iconSrc="https://cdn.simpleicons.org/react/61dafb" alt="React" />
+            <AppIcon bg="linear-gradient(145deg,#3b1f6e,#6b21a8)" iconSrc="https://cdn.simpleicons.org/nextdotjs/ffffff" alt="Next.js" />
+          </div>
+          <div className="flex gap-[5px] sm:gap-[7px]">
+            <AppIcon bg="linear-gradient(145deg,#7c3109,#c2410c)" iconSrc="https://cdn.simpleicons.org/typescript/ffffff" alt="TypeScript" />
+            <AppIcon bg="linear-gradient(145deg,#1d4ed8,#2563eb)" iconSrc="https://cdn.simpleicons.org/tailwindcss/ffffff" alt="Tailwind" />
+          </div>
+        </div>
       </div>
 
-      <div className="flex justify-center gap-1.5 mt-4 relative z-20">
-        {steps.map((_, i) => (
-          <div
-            key={i}
-            className={`h-1 rounded-full transition-all duration-300 ease-out ${
-              i === activeStep ? "w-6 bg-white" : "w-1.5 bg-white/10"
-            }`}
-          />
-        ))}
+      {/* ── ROW 2: Animated notification stack ── */}
+      <NotificationStack />
+
+      {/* ── ROW 3: 2×2 top-anchored icons (left) + Contact card (right) ── */}
+      <div className="flex gap-2" style={{ flex: "1 1 0", minHeight: 0 }}>
+
+        {/* 2×2 icons — top-anchored */}
+        <div className="flex flex-col justify-start gap-[5px] sm:gap-[7px] flex-shrink-0 h-full">
+          <div className="flex gap-[5px] sm:gap-[7px]">
+            <AppIcon bg="linear-gradient(145deg,#be123c,#e11d48)" iconSrc="https://cdn.simpleicons.org/nodedotjs/ffffff" alt="Node.js" />
+            <AppIcon bg="linear-gradient(145deg,#854d0e,#ca8a04)" iconSrc="https://cdn.simpleicons.org/github/ffffff" alt="GitHub" />
+          </div>
+          <div className="flex gap-[5px] sm:gap-[7px]">
+            <AppIcon bg="linear-gradient(145deg,#075985,#0369a1)" iconSrc="https://cdn.simpleicons.org/docker/ffffff" alt="Docker" />
+            <AppIcon bg="linear-gradient(145deg,#1e3a5f,#2d5986)" iconSrc="https://cdn.simpleicons.org/python/ffffff" alt="Python" />
+          </div>
+        </div>
+
+        {/* Contact card turned into sleek Professional Resume Download Link */}
+        <a 
+          href="/resume.pdf" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex-1 rounded-[18px] bg-white/[0.08] hover:bg-white/[0.12] transition-all duration-300 border border-white/[0.10] hover:border-white/[0.18] p-2.5 sm:p-3 flex flex-col min-w-0 overflow-hidden group cursor-pointer"
+        >
+          {/* Circular Document Icon Container */}
+          <div className="w-[38px] h-[38px] sm:w-[44px] sm:h-[44px] rounded-full bg-blue-500/10 border border-blue-500/20 shadow-lg mx-auto flex-shrink-0 flex items-center justify-center transition-transform group-hover:scale-[1.03] group-hover:bg-blue-500/20">
+            <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 group-hover:text-blue-300 transition-colors" />
+          </div>
+          {/* Push content to bottom */}
+          <div className="flex-1" />
+          {/* Status dots & Label */}
+          <div className="flex items-center gap-[5px] mb-1.5 mt-2">
+            <span className="w-1.5 h-1.5 sm:w-[6px] sm:h-[6px] rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)] shrink-0" />
+            <span className="text-[7.5px] sm:text-[8px] text-white/50 font-medium tracking-wide uppercase truncate">
+              Resume .PDF
+            </span>
+          </div>
+          {/* Name & Arrow */}
+          <div className="flex justify-between items-center gap-1">
+            <p className="text-[10px] sm:text-[11px] font-semibold text-white/90 group-hover:text-white leading-[1.1] transition-colors truncate">
+              Preview & Save
+            </p>
+            <Download className="w-[14px] h-[14px] text-white/30 group-hover:text-white/80 transition-colors shrink-0" />
+          </div>
+        </a>
       </div>
+
     </div>
   );
 }
@@ -476,7 +625,7 @@ export function BentoSection() {
                 </div>
               </motion.div>
 
-              {/* CARD 4: Steps How I Work */}
+              {/* CARD 4: iOS Widgets */}
               <motion.div
                 variants={fadeUp}
                 initial="hidden"
@@ -484,16 +633,7 @@ export function BentoSection() {
                 custom={3}
                 className="bento-card p-0 relative overflow-hidden h-[380px] md:h-[400px] flex flex-col group"
               >
-                {/* How I Work Title */}
-                <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 pointer-events-none w-max">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] bg-clip-text text-transparent bg-gradient-to-r from-red-300 via-red-400 to-red-500 flex items-center gap-2">
-                    <Sparkles className="w-3 h-3 text-red-500" /> Workflow
-                  </span>
-                </div>
-
-                <div className="absolute inset-0 z-0 pointer-events-auto">
-                  <WorkflowAutoCard />
-                </div>
+                <IOSWidgetsCard />
               </motion.div>
             </div>
           </div>

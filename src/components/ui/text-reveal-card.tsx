@@ -233,38 +233,61 @@ export const TextRevealCardDescription = ({
   );
 };
 
+type StarData = {
+  top: number;
+  left: number;
+  moveTop: number;
+  moveLeft: number;
+  opacity: number;
+  duration: number;
+};
+
 const Stars = () => {
-  const randomMove = () => Math.random() * 4 - 2;
-  const randomOpacity = () => Math.random();
-  const random = () => Math.random();
+  const [stars, setStars] = useState<StarData[]>([]);
+
+  useEffect(() => {
+    setStars(
+      Array.from({ length: 20 }, () => ({
+        top: Math.random() * 100,
+        left: Math.random() * 100,
+        moveTop: Math.random() * 4 - 2,
+        moveLeft: Math.random() * 4 - 2,
+        opacity: Math.random(),
+        duration: Math.random() * 10 + 20,
+      }))
+    );
+  }, []);
+
+  if (stars.length === 0) return null;
+
   return (
     <div className="absolute inset-0">
-      {[...Array(20)].map((_, i) => (
+      {stars.map((star, i) => (
         <motion.span
           key={`star-${i}`}
           animate={{
-            top: `calc(${random() * 100}% + ${randomMove()}px)`,
-            left: `calc(${random() * 100}% + ${randomMove()}px)`,
-            opacity: randomOpacity(),
+            top: `calc(${Math.random() * 100}% + ${star.moveTop}px)`,
+            left: `calc(${Math.random() * 100}% + ${star.moveLeft}px)`,
+            opacity: star.opacity,
             scale: [1, 1.2, 0],
           }}
           transition={{
-            duration: random() * 10 + 20,
+            duration: star.duration,
             repeat: Infinity,
             ease: "linear",
           }}
           style={{
             position: "absolute",
-            top: `${random() * 100}%`,
-            left: `${random() * 100}%`,
-            width: `2px`,
-            height: `2px`,
+            top: `${star.top}%`,
+            left: `${star.left}%`,
+            width: "2px",
+            height: "2px",
             backgroundColor: "white",
             borderRadius: "50%",
             zIndex: 1,
           }}
           className="inline-block"
-        ></motion.span>
+        />
       ))}
     </div>
   );

@@ -212,49 +212,44 @@
   transition: filter 0.5s cubic-bezier(0.16, 1, 0.3, 1), brightness 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ─── Bento Grid Cards ─── */
+/* ─── Bento Grid Cards — Clean Glass ─── */
 .bento-card {
-  background: linear-gradient(180deg, rgba(28, 28, 30, 0.8) 0%, rgba(10, 10, 12, 0.95) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(22, 22, 26, 0.50);
   border-radius: 28px;
-  backdrop-filter: blur(24px) saturate(120%);
-  -webkit-backdrop-filter: blur(24px) saturate(120%);
+  backdrop-filter: blur(40px) saturate(160%);
+  -webkit-backdrop-filter: blur(40px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow:
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.15),
-    inset 0 8px 16px 0 rgba(255, 255, 255, 0.05),
-    inset 0 -4px 12px 0 rgba(0, 0, 0, 0.5),
-    0 24px 48px -12px rgba(0, 0, 0, 0.8),
-    0 4px 12px rgba(0, 0, 0, 0.4);
+    0 20px 56px -8px rgba(0, 0, 0, 0.70),
+    0 6px 18px rgba(0, 0, 0, 0.40);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
 }
 
 .bento-card:hover {
-  /* Enhanced hover reflection for 3D glass */
+  border-color: rgba(255, 255, 255, 0.22);
   box-shadow:
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.2),
-    inset 0 12px 24px 0 rgba(255, 255, 255, 0.08),
-    inset 0 -4px 12px 0 rgba(0, 0, 0, 0.6),
-    0 32px 64px -12px rgba(0, 0, 0, 0.9),
-    0 8px 16px rgba(0, 0, 0, 0.5);
-  transform: translateY(-2px);
+    0 28px 64px -8px rgba(0, 0, 0, 0.80),
+    0 8px 24px rgba(0, 0, 0, 0.50),
+    0 0 0 1px rgba(255, 255, 255, 0.07);
+  transform: translateY(-3px);
 }
 
-/* Cursor-tracking glow */
-/* Cursor-tracking glow restored */
+/* Cursor-tracking radial glow */
 .bento-card::after {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 20px;
+  border-radius: inherit;
   opacity: 0;
   pointer-events: none;
   z-index: 1;
-  background: radial-gradient(150px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-      rgba(255, 255, 255, 0.05),
-      transparent 80%);
+  background: radial-gradient(
+    180px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.06),
+    transparent 80%
+  );
   transition: opacity 0.4s ease;
 }
 
