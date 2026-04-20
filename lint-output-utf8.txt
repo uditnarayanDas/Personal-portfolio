@@ -1,0 +1,106 @@
+﻿
+> portfolio@0.1.0 lint
+> eslint
+
+
+C:\Users\dasud\Desktop\portfolio\src\app\about\page.tsx
+  25:9  error  Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+C:\Users\dasud\Desktop\portfolio\src\app\blog\page.tsx
+  25:9  error  Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+C:\Users\dasud\Desktop\portfolio\src\app\page.tsx
+  8:10  warning  'MapPin' is defined but never used  @typescript-eslint/no-unused-vars
+  8:18  warning  'Layers' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\dasud\Desktop\portfolio\src\app\work\page.tsx
+  25:9  error  Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+C:\Users\dasud\Desktop\portfolio\src\components\bento-section.tsx
+    4:18  warning  'AnimatePresence' is defined but never used                                                                                                                                                                                                                                              @typescript-eslint/no-unused-vars
+    7:10  warning  'Mail' is defined but never used                                                                                                                                                                                                                                                         @typescript-eslint/no-unused-vars
+    7:16  warning  'Copy' is defined but never used                                                                                                                                                                                                                                                         @typescript-eslint/no-unused-vars
+    7:22  warning  'Check' is defined but never used                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+    7:37  warning  'FileText' is defined but never used                                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+    7:47  warning  'Download' is defined but never used                                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+   10:3   warning  'TextRevealCardDescription' is defined but never used                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+   11:3   warning  'TextRevealCardTitle' is defined but never used                                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  148:9   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  184:10  warning  'ServiceMarqueeCard' is defined but never used                                                                                                                                                                                                                                           @typescript-eslint/no-unused-vars
+  222:10  warning  'emailCopied' is assigned a value but never used                                                                                                                                                                                                                                         @typescript-eslint/no-unused-vars
+  225:9   warning  'handleCopyEmail' is assigned a value but never used                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+  302:9   warning  'services' is assigned a value but never used                                                                                                                                                                                                                                            @typescript-eslint/no-unused-vars
+
+C:\Users\dasud\Desktop\portfolio\src\components\floating-dock-demo.tsx
+  39:9  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\dasud\Desktop\portfolio\src\components\kokonutui\smooth-tab.tsx
+  140:27  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  265:43  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  266:44  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+
+C:\Users\dasud\Desktop\portfolio\src\components\ui\background-beams-with-collision.tsx
+  117:51  warning  'ref' is defined but never used                                                                               @typescript-eslint/no-unused-vars
+  161:6   warning  React Hook useEffect has a missing dependency: 'parentRef'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\dasud\Desktop\portfolio\src\components\ui\hover-border-gradient.tsx
+   2:38  warning  'useRef' is defined but never used                                                                                                   @typescript-eslint/no-unused-vars
+  57:6   warning  React Hook useEffect has missing dependencies: 'duration' and 'rotateDirection'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  60:22  warning  'event' is defined but never used                                                                                                    @typescript-eslint/no-unused-vars
+
+C:\Users\dasud\Desktop\portfolio\src\components\ui\stars-background.tsx
+  91:44  warning  The ref value 'canvasRef.current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'canvasRef.current' to a variable inside the effect, and use that variable in the cleanup function  react-hooks/exhaustive-deps
+
+C:\Users\dasud\Desktop\portfolio\src\components\ui\terminal.tsx
+  213:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\dasud\Desktop\portfolio\src\components\ui\terminal.tsx:213:5
+  211 |     if (phase !== "executing") return;
+  212 |
+> 213 |     setLines((prev) => [...prev, { type: "command", content: currentCommand }]);
+      |     ^^^^^^^^ Avoid calling setState() directly within an effect
+  214 |     setCurrentText("");
+  215 |
+  216 |     if (currentOutputs.length > 0) {  react-hooks/set-state-in-effect
+
+C:\Users\dasud\Desktop\portfolio\src\components\ui\text-reveal-card.tsx
+    2:52  warning  'useCallback' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+   20:43  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-explicit-any
+   81:36  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-explicit-any
+  269:26  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\dasud\Desktop\portfolio\src\components\ui\text-reveal-card.tsx:269:26
+  267 |           key={`star-${i}`}
+  268 |           animate={{
+> 269 |             top: `calc(${Math.random() * 100}% + ${star.moveTop}px)`,
+      |                          ^^^^^^^^^^^^^ Cannot call impure function
+  270 |             left: `calc(${Math.random() * 100}% + ${star.moveLeft}px)`,
+  271 |             opacity: star.opacity,
+  272 |             scale: [1, 1.2, 0],  react-hooks/purity
+  270:27  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\dasud\Desktop\portfolio\src\components\ui\text-reveal-card.tsx:270:27
+  268 |           animate={{
+  269 |             top: `calc(${Math.random() * 100}% + ${star.moveTop}px)`,
+> 270 |             left: `calc(${Math.random() * 100}% + ${star.moveLeft}px)`,
+      |                           ^^^^^^^^^^^^^ Cannot call impure function
+  271 |             opacity: star.opacity,
+  272 |             scale: [1, 1.2, 0],
+  273 |           }}                react-hooks/purity
+
+C:\Users\dasud\Desktop\portfolio\src\components\work-section.tsx
+  5:18  warning  'Briefcase' is defined but never used  @typescript-eslint/no-unused-vars
+  5:34  warning  'Globe' is defined but never used      @typescript-eslint/no-unused-vars
+
+Γ£û 36 problems (11 errors, 25 warnings)
+

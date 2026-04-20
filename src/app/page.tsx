@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import { StarsBackground } from "@/components/ui/stars-background";
-import { MapPin, Layers } from "lucide-react";
+
 import { ConnectSection } from "@/components/connect-section";
 import { BentoSection } from "@/components/bento-section";
 import { WorkSection } from "@/components/work-section";

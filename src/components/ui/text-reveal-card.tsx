@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState, memo, useCallback } from "react";
+import React, { useEffect, useRef, useState, memo } from "react";
 import { motion } from "motion/react";
 import { twMerge } from "tailwind-merge";
 import { cn } from "@/lib/utils";
@@ -17,7 +17,7 @@ export const TextRevealCard = ({
 }) => {
   const [widthPercentage, setWidthPercentage] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const cardRef = useRef<HTMLDivElement | any>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const [left, setLeft] = useState(0);
   const [localWidth, setLocalWidth] = useState(0);
   const [isMouseOver, setIsMouseOver] = useState(false);
@@ -78,7 +78,7 @@ export const TextRevealCard = ({
     }
   }, [isMobile]);
 
-  function mouseMoveHandler(event: any) {
+  function mouseMoveHandler(event: React.MouseEvent<HTMLDivElement>) {
     event.preventDefault();
 
     const { clientX } = event;
@@ -246,6 +246,7 @@ const Stars = () => {
   const [stars, setStars] = useState<StarData[]>([]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setStars(
       Array.from({ length: 20 }, () => ({
         top: Math.random() * 100,
@@ -266,8 +267,8 @@ const Stars = () => {
         <motion.span
           key={`star-${i}`}
           animate={{
-            top: `calc(${Math.random() * 100}% + ${star.moveTop}px)`,
-            left: `calc(${Math.random() * 100}% + ${star.moveLeft}px)`,
+            top: `calc(${star.top}% + ${star.moveTop}px)`,
+            left: `calc(${star.left}% + ${star.moveLeft}px)`,
             opacity: star.opacity,
             scale: [1, 1.2, 0],
           }}

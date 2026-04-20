@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import type { LucideIcon } from "lucide-react";
@@ -137,7 +138,7 @@ export const DEFAULT_TABS: TabItem[] = [
             Launch & Optimize
           </h3>
           <p className="max-w-[95%] sm:max-w-[85%] text-neutral-400 text-[9px] sm:text-[10px] md:text-[11px] leading-relaxed md:leading-relaxed">
-            Deployment isn't the finish line. With modern CI/CD pipelines, I seamlessly launch your product and continuously integrate tracking frameworks to constantly refine performance data and guarantee maximum digital impact.
+            Deployment isn&apos;t the finish line. With modern CI/CD pipelines, I seamlessly launch your product and continuously integrate tracking frameworks to constantly refine performance data and guarantee maximum digital impact.
           </p>
         </div>
       </div>

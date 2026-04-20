@@ -2,7 +2,7 @@
 
 import React from "react";
 import { StickyScroll, ProjectItem } from "@/components/ui/sticky-scroll-reveal";
-import { Layers, Briefcase, Zap, Globe, Code, Database, LayoutTemplate, ShieldCheck, Box } from "lucide-react";
+import { Layers, Zap, Code, Database, LayoutTemplate, ShieldCheck, Box } from "lucide-react";
 
 const mockProjects: ProjectItem[] = [
   {

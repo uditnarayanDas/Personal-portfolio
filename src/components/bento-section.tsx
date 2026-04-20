@@ -1,15 +1,11 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useInView } from "motion/react";
+import { motion, useInView } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Mail, Copy, Check, Globe2, FileText, Download } from "lucide-react";
-import {
-  TextRevealCard,
-  TextRevealCardDescription,
-  TextRevealCardTitle,
-} from "@/components/ui/text-reveal-card";
+import { Globe2 } from "lucide-react";
+import { TextRevealCard } from "@/components/ui/text-reveal-card";
 import { FlipWords } from "@/components/ui/flip-words";
 import { Terminal } from "./ui/terminal";
 
@@ -145,6 +141,7 @@ function TechBadge({ name, color, icon }: { name: string; color?: string; icon?:
   return (
     <div className="flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3.5 py-[7px] text-[11px] font-medium text-neutral-300 transition-all duration-300 hover:border-white/15 hover:bg-white/[0.06] hover:text-white select-none whitespace-nowrap">
       {icon ? (
+        /* eslint-disable-next-line @next/next/no-img-element */
         <img
           src={`https://cdn.simpleicons.org/${icon}/${color?.replace('#', '') || 'white'}`}
           alt={name}
@@ -180,53 +177,15 @@ function Marquee({ items, direction = "left", speed = 20 }: { items: { name: str
   );
 }
 
-/* ═══════════════════════ Service Marquee Card ═══════════════════════ */
-function ServiceMarqueeCard({
-  title,
-  subtitle,
-}: {
-  title: string;
-  subtitle: string;
-}) {
-  return (
-    <div className="flex-shrink-0 w-[200px] md:w-[220px] bento-card p-5 relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
-      {/* Grid pattern background */}
-      <div
-        className="absolute inset-0 opacity-[0.04] pointer-events-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
-          backgroundSize: "24px 24px",
-        }}
-      />
-      <div className="relative z-10">
-        <h4 className="text-[13px] font-semibold text-white/80 leading-snug mb-1.5">
-          {title}
-        </h4>
-        <p className="text-[11px] text-neutral-600 leading-relaxed">
-          {subtitle}
-        </p>
-      </div>
-    </div>
-  );
-}
 
 /* ═══════════════════════════════════════════════════════════
    MAIN BENTO SECTION
    ═══════════════════════════════════════════════════════════ */
 export function BentoSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const marqueeRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
 
-  const [emailCopied, setEmailCopied] = useState(false);
   const [activeLocation, setActiveLocation] = useState("India");
-
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText("dasuditnarayan9@gmail.com");
-    setEmailCopied(true);
-    setTimeout(() => setEmailCopied(false), 2000);
-  };
 
 
   // Cursor glow tracking on bento cards
@@ -248,26 +207,7 @@ export function BentoSection() {
     return () => section.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Infinite marquee scroll
-  useEffect(() => {
-    const container = marqueeRef.current;
-    if (!container) return;
 
-    let animId: number;
-    let pos = 0;
-    const speed = 0.5;
-
-    function tick() {
-      pos += speed;
-      const halfWidth = container!.scrollWidth / 2;
-      if (pos >= halfWidth) pos = 0;
-      container!.style.transform = `translateX(-${pos}px)`;
-      animId = requestAnimationFrame(tick);
-    }
-
-    animId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(animId);
-  }, []);
 
   const techStack1 = [
     { name: "Next.js", icon: "nextdotjs", color: "#ffffff" },
@@ -299,16 +239,7 @@ export function BentoSection() {
     { name: "Vercel", icon: "vercel", color: "#ffffff" },
   ];
 
-  const services = [
-    { title: "Full-Stack Development", subtitle: "End-to-end web applications with modern architecture" },
-    { title: "UI/UX Design", subtitle: "Pixel-perfect interfaces with user-centric flows" },
-    { title: "Cloud & DevOps", subtitle: "Infrastructure, CI/CD, and containerized deployments" },
-    { title: "AI Integration", subtitle: "LLMs, vector search, and smart automation" },
-    { title: "Database Design", subtitle: "Optimized data modeling and real-time sync" },
-    { title: "Performance Tuning", subtitle: "Core Web Vitals mastery and optimization" },
-    { title: "API Architecture", subtitle: "RESTful and GraphQL API design patterns" },
-    { title: "Mobile Responsive", subtitle: "Seamless cross-device adaptive experiences" },
-  ];
+
 
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
@@ -467,43 +398,7 @@ export function BentoSection() {
               </div>
             </motion.div>
           </div>
-
-          {/* CARD 6: Scrolling Services */}
-          {/* <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            custom={5}
-            className="md:col-span-12 relative overflow-hidden"
-          >
-            <div className="mb-4 flex items-center justify-between px-1">
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600 block mb-1">
-                  Things I&apos;m doing
-                </span>
-                <h3 className="text-base md:text-lg font-semibold text-white/90">
-                  Building Digital Products
-                </h3>
-              </div>
-            </div>
-            <div className="relative overflow-hidden">
-              <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-r from-black to-transparent" />
-              <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-l from-black to-transparent" />
-              <div
-                ref={marqueeRef}
-                className="flex gap-4 will-change-transform"
-                style={{ width: "max-content" }}
-              >
-                {[...services, ...services].map((s, i) => (
-                  <ServiceMarqueeCard
-                    key={`${s.title}-${i}`}
-                    title={s.title}
-                    subtitle={s.subtitle}
-                  />
-                ))}
-              </div>
-            </div>
-          </motion.div> */}
+          {/* Removed unused CARD 6 */}
         </div>
       </div>
     </section>

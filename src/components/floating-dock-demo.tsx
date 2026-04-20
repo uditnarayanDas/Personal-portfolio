@@ -36,6 +36,7 @@ export default function FloatingDockDemo() {
     {
       title: "Aceternity UI",
       icon: (
+        /* eslint-disable-next-line @next/next/no-img-element */
         <img
           src="https://assets.aceternity.com/logo-dark.png"
           width={20}
