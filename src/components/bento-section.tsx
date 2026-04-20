@@ -143,10 +143,10 @@ function AppIcon({
 }) {
   return (
     <div
-      className="w-[44px] h-[44px] sm:w-[50px] sm:h-[50px] rounded-[14px] flex items-center justify-center shadow-md overflow-hidden flex-shrink-0 transition-transform hover:scale-105"
-      style={{ background: bg }}
+      className="w-full h-full rounded-[16px] sm:rounded-[20px] flex items-center justify-center overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.15)] cursor-pointer"
+      style={{ background: bg, boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15)" }}
     >
-      <img src={iconSrc} alt={alt} className="w-6 h-6 sm:w-7 sm:h-7" />
+      <img src={iconSrc} alt={alt} className="w-6 h-6 sm:w-8 sm:h-8 drop-shadow-md" />
     </div>
   );
 }
@@ -195,56 +195,53 @@ function NotificationStack() {
   useEffect(() => {
     const id = setInterval(() => {
       setActive((a) => (a + 1) % PROJECTS.length);
-    }, 3800);
+    }, 4000);
     return () => clearInterval(id);
   }, []);
 
   return (
-    <div className="relative flex-col items-center flex-shrink-0 w-full" style={{ height: "70px" }}>
-      <div className="absolute top-0 left-0 right-0 h-[64px] perspective-1000">
+    <div className="relative flex-col items-center flex-shrink-0 w-full" style={{ height: "100px" }}>
+      <div className="absolute top-0 left-0 right-0 h-[80px] perspective-1000">
         {PROJECTS.map((notif, index) => {
-          // Calculate offset relative to the active card
           const offset = (index - active + PROJECTS.length) % PROJECTS.length;
-
-          // offset 0 is front card.
-          // offset length-1 is the card that just transitioned out of the front
           const isLeaving = offset === PROJECTS.length - 1;
 
           return (
             <motion.div
               key={notif.id}
-              className="absolute inset-x-2 sm:inset-x-[10px] top-0 bottom-0 rounded-[14px] overflow-hidden border border-white/[0.10]"
+              className="absolute inset-x-0 sm:inset-x-1 top-0 rounded-[22px] overflow-hidden border border-white/[0.12] sm:border-white/[0.15]"
               style={{
-                background: "rgba(255,255,255,0.06)", // standard card color
-                backdropFilter: "blur(12px)",
+                height: "82px",
+                background: "rgba(255,255,255,0.06)",
+                backdropFilter: "blur(40px)",
+                WebkitBackdropFilter: "blur(40px)",
                 transformOrigin: "top center",
+                boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15), 0 10px 30px rgba(0,0,0,0.3)",
               }}
               animate={{
-                top: isLeaving ? 24 : offset * -7,
-                scaleX: isLeaving ? 0.95 : 1 - offset * 0.05,
-                opacity: isLeaving ? 0 : 1 - offset * 0.35,
+                top: isLeaving ? 24 : offset * 12,
+                scale: isLeaving ? 0.95 : 1 - offset * 0.04,
+                opacity: isLeaving ? 0 : offset > 2 ? 0 : 1 - offset * 0.15,
                 zIndex: PROJECTS.length - offset,
               }}
               transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
             >
-              <div className="flex items-start gap-2.5 h-full px-2.5 py-2 cursor-pointer hover:bg-white/[0.02] transition-colors">
-                {/* App icon */}
+              <div className="flex items-start gap-4 h-full px-4 py-[14px] cursor-pointer hover:bg-white/[0.04] transition-colors group">
                 <div
-                  className="w-7 h-7 rounded-[7px] flex-shrink-0 flex items-center justify-center shadow-sm"
-                  style={{ background: notif.iconBg, marginTop: '2px' }}
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-[12px] flex-shrink-0 flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_4px_10px_rgba(0,0,0,0.2)] transition-transform group-hover:scale-105"
+                  style={{ background: notif.iconBg, boxShadow: "inset 0 1px 1px rgba(255,255,255,0.25)" }}
                 >
-                  <img src={notif.iconSrc} alt={notif.app} className="w-[14px] h-[14px] drop-shadow-md" />
+                  <img src={notif.iconSrc} alt={notif.app} className="w-[22px] h-[22px] drop-shadow-md" />
                 </div>
 
-                {/* Text content - Shrink sizes for cleaner fit */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mt-[-1px] mb-[2px]">
-                    <span className="text-[8px] font-bold text-white/90 uppercase tracking-[0.08em] truncate">
+                <div className="flex-1 min-w-0 text-left pt-0.5">
+                  <div className="flex items-center justify-between mb-0.5">
+                    <span className="text-[14px] sm:text-[15px] font-semibold text-white/95 tracking-tight truncate">
                       {notif.app}
                     </span>
-                    <span className="text-[7.5px] text-white/50 font-medium ml-2 flex-shrink-0">{notif.time}</span>
+                    <span className="text-[12px] sm:text-[13px] text-white/40 font-medium ml-2 flex-shrink-0">{notif.time}</span>
                   </div>
-                  <p className="text-[8.5px] text-white/75 leading-[1.35] line-clamp-2 pr-1">
+                  <p className="text-[13px] sm:text-[14px] text-white/70 leading-tight line-clamp-2 pr-2 tracking-tight font-normal">
                     {notif.body}
                   </p>
                 </div>
@@ -260,87 +257,69 @@ function NotificationStack() {
 /* ═══════════════════════ iOS Widget Card ═══════════════════════ */
 function IOSWidgetsCard() {
   return (
-    <div className="absolute inset-0 p-3 flex flex-col gap-[14px] overflow-hidden select-none">
+    <div className="absolute inset-0 p-4 sm:p-5 flex flex-col gap-3 sm:gap-4 overflow-hidden select-none">
 
-      {/* ── ROW 1: Contact card (left) + 2×2 bottom-anchored icons (right) ── */}
-      <div className="flex gap-2" style={{ flex: "1 1 0", minHeight: 0 }}>
-
+      {/* ── ROW 1: Contact card (left) + 2×2 icons (right) ── */}
+      <div className="flex gap-3 sm:gap-4" style={{ flex: "1 1 0", minHeight: 0 }}>
         {/* Contact card */}
-        <div className="flex-1 rounded-[18px] bg-white/[0.08] hover:bg-white/[0.12] transition-colors cursor-pointer border border-white/[0.10] p-2.5 sm:p-3 flex flex-col min-w-0 overflow-hidden">
-          {/* Avatar — centered horizontally */}
-          <div className="w-[44px] h-[44px] sm:w-[50px] sm:h-[50px] rounded-full overflow-hidden border-2 border-white/15 shadow-lg mx-auto flex-shrink-0 transition-transform hover:scale-105">
+        <div className="flex-1 rounded-[24px] bg-white/[0.06] hover:bg-white/[0.08] transition-all duration-300 hover:-translate-y-1 cursor-pointer border border-white/[0.12] p-4 flex flex-col min-w-0 overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_10px_30px_rgba(0,0,0,0.3)] backdrop-blur-[30px]">
+          <div className="w-[42px] h-[42px] sm:w-[50px] sm:h-[50px] rounded-full overflow-hidden border border-white/20 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-105">
             <img src="/avatar-ud.png" alt="Uditnarayan Das" className="w-full h-full object-cover" />
           </div>
-          {/* Push name to bottom */}
           <div className="flex-1" />
-          {/* Status dots */}
           <div className="flex gap-[4px] sm:gap-[5px] mb-1.5 mt-2">
-            <span className="w-1.5 h-1.5 sm:w-[7px] sm:h-[7px] rounded-full bg-green-400" />
-            <span className="w-1.5 h-1.5 sm:w-[7px] sm:h-[7px] rounded-full bg-yellow-400" />
-            <span className="w-1.5 h-1.5 sm:w-[7px] sm:h-[7px] rounded-full bg-orange-400" />
+            <span className="w-1.5 h-1.5 sm:w-[6px] sm:h-[6px] rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+            <span className="w-1.5 h-1.5 sm:w-[6px] sm:h-[6px] rounded-full bg-yellow-500" />
+            <span className="w-1.5 h-1.5 sm:w-[6px] sm:h-[6px] rounded-full bg-orange-500" />
           </div>
-          {/* Name / email */}
-          <p className="text-[10px] sm:text-[11px] font-semibold text-white leading-tight truncate">Uditnarayan Das</p>
-          <p className="text-[8px] sm:text-[9px] text-white/50 mt-0.5 truncate">udit@portfolio.dev</p>
+          <p className="text-[14px] font-semibold text-white/95 leading-tight truncate tracking-tight">Uditnarayan Das</p>
+          <p className="text-[12px] text-white/50 mt-0.5 truncate tracking-tight">udit@portfolio.dev</p>
         </div>
 
-        {/* 2×2 icons — bottom-anchored */}
-        <div className="flex flex-col justify-end gap-[5px] sm:gap-[7px] flex-shrink-0 h-full">
-          <div className="flex gap-[5px] sm:gap-[7px]">
-            <AppIcon bg="linear-gradient(145deg,#1e3a2f,#2a5c40)" iconSrc="https://cdn.simpleicons.org/react/61dafb" alt="React" />
-            <AppIcon bg="linear-gradient(145deg,#3b1f6e,#6b21a8)" iconSrc="https://cdn.simpleicons.org/nextdotjs/ffffff" alt="Next.js" />
-          </div>
-          <div className="flex gap-[5px] sm:gap-[7px]">
-            <AppIcon bg="linear-gradient(145deg,#7c3109,#c2410c)" iconSrc="https://cdn.simpleicons.org/typescript/ffffff" alt="TypeScript" />
-            <AppIcon bg="linear-gradient(145deg,#1d4ed8,#2563eb)" iconSrc="https://cdn.simpleicons.org/tailwindcss/ffffff" alt="Tailwind" />
-          </div>
+        {/* 2×2 icons */}
+        <div className="grid grid-cols-2 grid-rows-2 gap-2 sm:gap-3 flex-shrink-0 aspect-square h-full">
+          <AppIcon bg="linear-gradient(135deg,#1f3b2f,#2c6142)" iconSrc="https://cdn.simpleicons.org/react/61dafb" alt="React" />
+          <AppIcon bg="linear-gradient(135deg,#3c1f6f,#7322b5)" iconSrc="https://cdn.simpleicons.org/nextdotjs/ffffff" alt="Next.js" />
+          <AppIcon bg="linear-gradient(135deg,#7c3109,#d0460c)" iconSrc="https://cdn.simpleicons.org/typescript/ffffff" alt="TypeScript" />
+          <AppIcon bg="linear-gradient(135deg,#1d4ed8,#2563eb)" iconSrc="https://cdn.simpleicons.org/tailwindcss/ffffff" alt="Tailwind" />
         </div>
       </div>
 
       {/* ── ROW 2: Animated notification stack ── */}
       <NotificationStack />
 
-      {/* ── ROW 3: 2×2 top-anchored icons (left) + Contact card (right) ── */}
-      <div className="flex gap-2" style={{ flex: "1 1 0", minHeight: 0 }}>
-
-        {/* 2×2 icons — top-anchored */}
-        <div className="flex flex-col justify-start gap-[5px] sm:gap-[7px] flex-shrink-0 h-full">
-          <div className="flex gap-[5px] sm:gap-[7px]">
-            <AppIcon bg="linear-gradient(145deg,#be123c,#e11d48)" iconSrc="https://cdn.simpleicons.org/nodedotjs/ffffff" alt="Node.js" />
-            <AppIcon bg="linear-gradient(145deg,#854d0e,#ca8a04)" iconSrc="https://cdn.simpleicons.org/github/ffffff" alt="GitHub" />
-          </div>
-          <div className="flex gap-[5px] sm:gap-[7px]">
-            <AppIcon bg="linear-gradient(145deg,#075985,#0369a1)" iconSrc="https://cdn.simpleicons.org/docker/ffffff" alt="Docker" />
-            <AppIcon bg="linear-gradient(145deg,#1e3a5f,#2d5986)" iconSrc="https://cdn.simpleicons.org/python/ffffff" alt="Python" />
-          </div>
+      {/* ── ROW 3: 2×2 icons (left) + Resume card (right) ── */}
+      <div className="flex gap-3 sm:gap-4" style={{ flex: "1 1 0", minHeight: 0 }}>
+        {/* 2×2 icons */}
+        <div className="grid grid-cols-2 grid-rows-2 gap-2 sm:gap-3 flex-shrink-0 aspect-square h-full">
+          <AppIcon bg="linear-gradient(135deg,#be123c,#e11d48)" iconSrc="https://cdn.simpleicons.org/nodedotjs/ffffff" alt="Node.js" />
+          <AppIcon bg="linear-gradient(135deg,#854d0e,#ca8a04)" iconSrc="https://cdn.simpleicons.org/github/ffffff" alt="GitHub" />
+          <AppIcon bg="linear-gradient(135deg,#075985,#0369a1)" iconSrc="https://cdn.simpleicons.org/docker/ffffff" alt="Docker" />
+          <AppIcon bg="linear-gradient(135deg,#1e3a5f,#2d5986)" iconSrc="https://cdn.simpleicons.org/python/ffffff" alt="Python" />
         </div>
 
-        {/* Contact card turned into sleek Professional Resume Download Link */}
-        <a 
-          href="/resume.pdf" 
-          target="_blank" 
+        {/* Resume Card */}
+        <a
+          href="/resume.pdf"
+          target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 rounded-[18px] bg-white/[0.08] hover:bg-white/[0.12] transition-all duration-300 border border-white/[0.10] hover:border-white/[0.18] p-2.5 sm:p-3 flex flex-col min-w-0 overflow-hidden group cursor-pointer"
+          className="flex-1 rounded-[24px] bg-white/[0.06] hover:bg-white/[0.08] transition-all duration-300 hover:-translate-y-1 cursor-pointer border border-white/[0.12] p-4 flex flex-col min-w-0 overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_10px_30px_rgba(0,0,0,0.3)] backdrop-blur-[30px] group"
         >
-          {/* Circular Document Icon Container */}
-          <div className="w-[38px] h-[38px] sm:w-[44px] sm:h-[44px] rounded-full bg-blue-500/10 border border-blue-500/20 shadow-lg mx-auto flex-shrink-0 flex items-center justify-center transition-transform group-hover:scale-[1.03] group-hover:bg-blue-500/20">
-            <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 group-hover:text-blue-300 transition-colors" />
+          <div className="w-[42px] h-[42px] sm:w-[50px] sm:h-[50px] rounded-[14px] sm:rounded-[16px] bg-blue-500/15 border border-blue-400/20 shadow-sm flex-shrink-0 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:bg-blue-500/25">
+            <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400 group-hover:text-blue-300 transition-colors" />
           </div>
-          {/* Push content to bottom */}
           <div className="flex-1" />
-          {/* Status dots & Label */}
-          <div className="flex items-center gap-[5px] mb-1.5 mt-2">
-            <span className="w-1.5 h-1.5 sm:w-[6px] sm:h-[6px] rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)] shrink-0" />
-            <span className="text-[7.5px] sm:text-[8px] text-white/50 font-medium tracking-wide uppercase truncate">
+          <div className="flex items-center gap-[6px] mb-1.5 mt-2">
+            <span className="w-1.5 h-1.5 sm:w-[6px] sm:h-[6px] rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)] shrink-0 animate-pulse" />
+            <span className="text-[10px] sm:text-[11px] text-white/50 font-semibold tracking-wider small-caps uppercase truncate">
               Resume .PDF
             </span>
           </div>
-          {/* Name & Arrow */}
           <div className="flex justify-between items-center gap-1">
-            <p className="text-[10px] sm:text-[11px] font-semibold text-white/90 group-hover:text-white leading-[1.1] transition-colors truncate">
+            <p className="text-[12px] sm:text-[14px] font-semibold text-white/95 group-hover:text-white leading-[1.1] transition-colors truncate tracking-tight">
               Preview & Save
             </p>
-            <Download className="w-[14px] h-[14px] text-white/30 group-hover:text-white/80 transition-colors shrink-0" />
+            <Download className="w-[14px] h-[14px] sm:w-4 sm:h-4 text-white/30 group-hover:text-white/80 transition-colors shrink-0" />
           </div>
         </a>
       </div>
