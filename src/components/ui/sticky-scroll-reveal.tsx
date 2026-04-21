@@ -19,6 +19,7 @@ export type ProjectItem = {
   bulletPoints: string[];
   techStacks: TechStack[];
   imageContent: React.ReactNode;
+  videoSrc?: string;
 };
 
 // Sub-component to seamlessly manage individual mouse-tracking states per project image
@@ -26,15 +27,29 @@ function ProjectImageDisplay({ item, index, isActive }: { item: ProjectItem, ind
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    setMousePosition({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    setMousePosition({ x, y });
+
+    // Interactive scrub logic
+    if (item.videoSrc && videoRef.current && Number.isFinite(videoRef.current.duration)) {
+      const progress = Math.max(0, Math.min(1, x / rect.width));
+      videoRef.current.currentTime = progress * videoRef.current.duration;
+    }
   };
+
+  // Optional: Auto-play a bit or pause when not hovered
+  useEffect(() => {
+    if (item.videoSrc && videoRef.current && !isHovered) {
+      videoRef.current.pause();
+    }
+  }, [isHovered, item.videoSrc]);
 
   return (
     <motion.div
@@ -49,7 +64,20 @@ function ProjectImageDisplay({ item, index, isActive }: { item: ProjectItem, ind
         isHovered && "cursor-none"
       )}
     >
-      {item.imageContent}
+      {item.videoSrc && (
+        <video
+          ref={videoRef}
+          src={item.videoSrc}
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          muted
+          playsInline
+          preload="auto"
+        />
+      )}
+
+      <div className={cn("relative w-full h-full z-0 transition-opacity duration-300 pointer-events-none", item.videoSrc && isHovered ? "opacity-0" : "opacity-100")}>
+        {item.imageContent}
+      </div>
 
       {/* Liquid Glass Overlay Frame */}
       <div className="absolute inset-0 rounded-2xl border border-white/10 border-t-white/30 shadow-[inset_0_2px_15px_rgba(255,255,255,0.1)] pointer-events-none z-10" />
@@ -99,7 +127,7 @@ export const StickyScroll = ({
       cardElements.forEach((el, index) => {
         const rect = el.getBoundingClientRect();
         // Measure distance to center of viewport
-        const distance = Math.abs(rect.top - window.innerHeight * 0.4);
+        const distance = Math.abs(rect.top - window.innerHeight * 0.3);
         if (distance < minDistance) {
           minDistance = distance;
           activeIndex = index;
@@ -120,7 +148,7 @@ export const StickyScroll = ({
       */}
       <div className="hidden lg:flex items-start gap-10 xl:gap-16 w-full relative">
         {/* Left Side: Scrolling Images */}
-        <div className="w-[55%] xl:w-[60%] flex flex-col gap-[20vh] pt-[12vh] pb-[30vh]">
+        <div className="w-[55%] xl:w-[60%] flex flex-col gap-[20vh] pb-[30vh]">
           {content.map((item, index) => (
              <ProjectImageDisplay key={item.id} item={item} index={index} isActive={index === activeCard} />
           ))}

@@ -42,6 +42,7 @@ const mockProjects: ProjectItem[] = [
         </div>
       </div>
     ),
+    videoSrc: "/Aayush Bharti - Developer, Freelancer & Problem Solver - Google Chrome 2026-04-07 09-10-30.mp4",
   },
   {
     id: "nextventure",
