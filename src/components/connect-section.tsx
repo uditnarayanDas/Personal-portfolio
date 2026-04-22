@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from "react";
-import { ArrowRight, Copy, Check, Github } from "lucide-react";
+import { ArrowRight, Copy, Check } from "lucide-react";
+import { IconBrandGithub } from "@tabler/icons-react";
 import { motion } from "motion/react";
 
 export function ConnectSection() {
@@ -37,36 +38,36 @@ export function ConnectSection() {
       >
         {/* Fill background triggered from right icon circle area */}
         <motion.div
-           variants={{
-             initial: { width: "40px", height: "40px", right: "6px" },
-             hover: { width: "calc(100% - 12px)", height: "calc(100% - 12px)", right: "6px" },
-           }}
-           transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
-           className="absolute top-1/2 -translate-y-1/2 bg-white rounded-full z-0 pointer-events-none"
+          variants={{
+            initial: { width: "40px", height: "40px", right: "6px" },
+            hover: { width: "calc(100% - 12px)", height: "calc(100% - 12px)", right: "6px" },
+          }}
+          transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
+          className="absolute top-1/2 -translate-y-1/2 bg-white rounded-full z-0 pointer-events-none"
         />
 
         <div className="relative z-10 flex items-center gap-8 pl-5 pr-1">
           <motion.span
             variants={{
-                initial: { color: "#ffffff" },
-                hover: { color: "#000000" },
+              initial: { color: "#ffffff" },
+              hover: { color: "#000000" },
             }}
             transition={{ duration: 0.3 }}
             className="text-[11px] md:text-sm font-bold tracking-tight whitespace-nowrap"
           >
             Let&apos;s Connect
           </motion.span>
-          
+
           <div className="flex h-9 w-9 items-center justify-center rounded-full pointer-events-none">
-             <motion.div
-               variants={{
-                  initial: { rotate: 0, color: "#000000" },
-                  hover: { rotate: 45, color: "#000000" },
-               }}
-               transition={{ duration: 0.3 }}
-             >
-                <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
-             </motion.div>
+            <motion.div
+              variants={{
+                initial: { rotate: 0, color: "#000000" },
+                hover: { rotate: 45, color: "#000000" },
+              }}
+              transition={{ duration: 0.3 }}
+            >
+              <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
+            </motion.div>
           </div>
         </div>
       </motion.button>
@@ -92,7 +93,7 @@ export function ConnectSection() {
         className="flex items-center gap-2 cursor-pointer group px-4"
       >
         <div className="text-neutral-500 group-hover:text-white transition-colors duration-300">
-          <Github className="h-4 w-4" />
+          <IconBrandGithub className="h-4 w-4" />
         </div>
         <span className="text-neutral-400 group-hover:text-white text-[10px] md:text-sm font-medium transition-colors duration-300">
           GitHub
