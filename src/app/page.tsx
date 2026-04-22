@@ -9,6 +9,7 @@ import { StarsBackground } from "@/components/ui/stars-background";
 import { ConnectSection } from "@/components/connect-section";
 import { BentoSection } from "@/components/bento-section";
 import { WorkSection } from "@/components/work-section";
+import { AboutSection } from "@/components/about-section";
 import { MobileNotice } from "@/components/mobile-notice";
 
 export default function Home() {
@@ -80,6 +81,8 @@ export default function Home() {
 
         </div>
       </section>
+
+      <AboutSection />
 
       <BentoSection />
       <WorkSection />
