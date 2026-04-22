@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from "react";
-import { ArrowRight, Copy, Check } from "lucide-react";
+import { ArrowRight, Copy, Check, Github } from "lucide-react";
 import { motion } from "motion/react";
 
 export function ConnectSection() {
@@ -83,6 +83,21 @@ export function ConnectSection() {
           {email}
         </span>
       </div>
+
+      {/* GitHub Link */}
+      <a
+        href="https://github.com/uditnarayanDas"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 cursor-pointer group px-4"
+      >
+        <div className="text-neutral-500 group-hover:text-white transition-colors duration-300">
+          <Github className="h-4 w-4" />
+        </div>
+        <span className="text-neutral-400 group-hover:text-white text-[10px] md:text-sm font-medium transition-colors duration-300">
+          GitHub
+        </span>
+      </a>
     </motion.div>
   );
 }
